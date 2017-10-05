@@ -1,0 +1,10 @@
+~\true (\t\f t)
+~\false (\t\f f)
+
+~\bNot (\b b false true)
+
+~\bOr (\a\b a true~b true false)
+
+~\bAnd (\a\b a (b true false) false)
+
+~\bXor (\a\b a (b false true) (b true false))

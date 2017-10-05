@@ -1,0 +1,41 @@
+~\tPair(\a\b
+    \tpl tpl a b
+)
+
+~\tFirst(\a\b a)
+~\tSecond(\a\b b)
+~\tSetFirst(\t\v
+    tPair v (t tSecond)
+)
+~\tSetSecond(\t\v
+    tPair (t tFirst) v
+)
+
+~\tVararg(\i\fn
+    i (\nx
+        \st\e nx~\f\l st f~f e l
+    ) fn []
+)
+
+~\tTuple(\i
+    tVararg i~\v\tpl v (\e\nx
+        \st nx~st e
+    ) (\st st) tpl
+)
+
+~\tGet(\i\p
+    tVararg i \v
+        v (\e\nx
+            \idx iIsZero idx e~nx~iPred idx
+        ) (\idx\x x) p
+)
+
+~\tSet(\i\t\n\sv
+    t~tVararg i~\v\tpl v (\e\nx
+        \idx\st nx (iSucc idx)~st (iIsEQ idx n sv e)
+    ) (\idx\st st) 0 tpl
+)
+
+~\tVector(\i\t
+    t~tVararg i \v v
+)

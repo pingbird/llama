@@ -1,0 +1,73 @@
+~\iSucc(\n
+    \f\x f~n f x
+)
+
+~\iPred(\n
+    \f\x n (\g\h h~g f) (\u x) (\u u)
+)
+
+~\iAdd(\m\n
+    \f\x m f~n f x
+)
+
+~\iSub(\m\n
+    n iPred m
+)
+
+~\iMul(\m\n
+    \f m~n f
+)
+
+~\iPow(\m\n
+    \f\x n m f x
+)
+
+~\iIsZero(\n
+    n (\x false) true
+)
+
+~\iDiv(\m\n
+    n // TODO
+)
+
+~\iIsEQ(\m\n
+    bAnd
+        (iIsZero~iSub m n)
+        (iIsZero~iSub n m)
+)
+
+~\iIsEQ(\m\n
+    bAnd
+        (iIsZero~iSub m n)
+        (iIsZero~iSub n m)
+)
+
+~\iIsNEQ(\m\n
+    bNot~bAnd
+        (iIsZero~iSub m n)
+        (iIsZero~iSub n m)
+)
+
+~\iIsGT(\m\n
+    bAnd
+        (iIsZero~iSub n m)
+        (bNot~iIsZero~iSub m n)
+)
+
+~\iIsLT(\m\n
+    bAnd
+        (iIsZero~iSub m n)
+        (bNot~iIsZero~iSub n m)
+)
+
+~\iIsGE(\m\n
+    bNot~bAnd
+        (iIsZero~iSub m n)
+        (bNot~iIsZero~iSub n m)
+)
+
+~\iIsLE(\m\n
+    bNot~bAnd
+        (iIsZero~iSub n m)
+        (bNot~iIsZero~iSub m n)
+)

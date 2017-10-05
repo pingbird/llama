@@ -1,0 +1,96 @@
+~\"stdlib.lf"
+
+~\getjmp (\code
+    vFold (vIndexify code) (tTuple 3 [] [] []) (\jt\e
+        ~\i (e tFirst)
+        ~\char (e tSecond)
+        if (iIsEQ char '[') (
+            ~\st (jt (tGet 3 0))
+            ~\jt (tSet 3 jt 0 (vInsertEnd st i))
+            jt
+        )~if (iIsEQ char ']') (
+            ~\st (jt (tGet 3 0))
+            ~\ste (vLast st null)
+            ~\jmpFwd (jt (tGet 3 1))
+            ~\jmpBack (jt (tGet 3 2))
+            ~\jt (tSet 3 jt 0 (vRemoveLast st))
+            ~\jt (tSet 3 jt 1 (vInsertEnd jmpFwd~tPair ste i))
+            ~\jt (tSet 3 jt 2 (vInsertEnd jmpBack~tPair i~iSucc ste))
+            jt
+        ) jt
+    )
+)
+
+(\code\input
+    ~\jmp (getjmp code)
+
+    ~\jmpFwd (jmp (tGet 3 1))
+    ~\jmpBack (jmp (tGet 3 2))
+
+    ~\indexMap (\v\i
+        (vFirstWhere v (\e iIsEq (e tFirst) i) 0) tSecond
+    )
+
+    ~\codeLength (vLength code)
+
+    ~\pc (tGet 5 0)
+    ~\setPc (\st\v tSet st 5 0 v)
+    ~\ptr (tGet 5 1)
+    ~\setPtr (\st\v tSet st 5 1 v)
+    ~\mem (tGet 5 2)
+    ~\setMem (\st\v tSet st 5 2 v)
+    ~\out (tGet 5 3)
+    ~\setOut (\st\v tSet st 5 3 v)
+    ~\inputIndex (tGet 5 4)
+    ~\setInputIndex (\st\v tSet st 5 4 v)
+
+    ~\byteSucc (\n
+        (iIsEQ n 255) 0 (iSucc n)
+    )
+
+    ~\bytePred (\n
+        (iIsEQ n 0) 255 (iPred n)
+    )
+
+    (while (tTuple 5
+        0 // pc
+        0 // ptr
+        [0] // mem
+        [] // out
+        0 // inputIndex
+    ) (\st iIsLT (st pc) codeLength) (\st
+        ~\st (
+            ~\inst (vGet code (st pc) null)
+            if (iIsEQ inst '>') (
+                ~\st (setPtr st (iSucc~st ptr))
+                (if (iIsEQ (st ptr) (vLength~st mem))
+                    return setMem st~vInsertEnd (st mem) 0
+                ) (return st)
+            )~if (iIsEQ inst '<') (
+                if (iIsZero~st ptr) (
+                    return setMem st~vInsertStart (st mem) 0
+                ) (
+                    return setPtr st~iPred~st ptr
+                )
+            )~if (iIsEQ inst '+') (
+                return setMem st~vSet (st mem) (st ptr)~byteSucc~vGet (st mem) (st ptr) null
+            )~if (iIsEQ inst '-') (
+                return setMem st~vSet (st mem) (st ptr)~bytePred~vGet (st mem) (st ptr) null
+            )~if (iIsEQ inst '[') (
+                if (iIsZero~vGet (st mem) (st ptr) 0) (
+                    return setPc st~indexMap jmpFwd (st pc)
+                ) (
+                    return st
+                )
+            )~if (iIsEQ inst ']') (
+                return setPc st~indexMap jmpBack (st pc)
+            )~if (iIsEQ inst ',') (
+                ~\st (setMem st~vSet (st mem) (st ptr)~vGet input (st inputIndex) 0)
+                return setInputIndex st~iSucc~st inputIndex
+            )~if (iIsEQ inst '.') (
+                setOut st~vInsertEnd (st out)~vGet (st mem) (st ptr) 0
+            ) st
+        )
+        return setPc st~iSucc (st pc)
+    )) out
+)"." ""
