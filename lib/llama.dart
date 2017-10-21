@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 import 'dart:io';
 
 class LineBuffer { // TODO: make this much faster
@@ -79,7 +80,12 @@ class Lambda extends Expr {
   get children => [body];
   set children(List<Expr> c) => body = c[0];
   
-  factory Lambda.fromInt(int i) {
+  factory Lambda.fromInt(int i, [bool signed = false]) {
+    if (signed) {
+      return new Lambda("sgn", new Application(
+        new Application(new Variable("sgn"), new Lambda.fromInt(max(0, i))),
+      new Lambda.fromInt(max(0, -i))));
+    }
     Expr o = new Variable("x");
     for (int j = 0; j < i; j++) {
       o = new Application(new Variable("f"), o);
@@ -95,9 +101,11 @@ class Lambda extends Expr {
     String str;
     List<Expr> vt;
     bool b;
-    
+
     if ((n = toNumber()) != null) {
       return n.toString();
+    } else if ((n = toSigned()) != null) {
+      return "${n >= 0 ? "+" : ""}$n";
     } else if ((str = toRawString()) != null) {
       return "\"${str.split("").map((c) {
         if (revEscapeChars.containsKey(c)) {
@@ -143,6 +151,17 @@ class Lambda extends Expr {
       ca = ca.param;
     }
     return i;
+  }
+  
+  int toSigned() {
+    var elm = toTuple("sgn");
+    if (elm == null) return null;
+    if (elm.length != 2 || elm[0] is! Lambda || elm[1] is! Lambda) return null;
+    var a = (elm[0] as Lambda).toNumber();
+    if (a == null) return null;
+    var b = (elm[1] as Lambda).toNumber();
+    if (b == null) return null;
+    return a - b;
   }
 
   String toRawString() {
@@ -194,8 +213,8 @@ class Lambda extends Expr {
     return o;
   }
   
-  List<Expr> toTuple() {
-    if (param != "tpl") return null;
+  List<Expr> toTuple([String tpnm = "tpl"]) {
+    if (param != tpnm) return null;
     if (body is Variable && (body as Variable).bound == 0) return [];
     if (body is! Application) return null;
     List<Expr> o = [];
@@ -203,7 +222,7 @@ class Lambda extends Expr {
     while (true) {
       o.insert(0, ap.param);
       if (ap.lambda is Variable) {
-        if ((ap.lambda as Variable).name == "tpl") break; else return null;
+        if ((ap.lambda as Variable).name == tpnm) break; else return null;
       }
       if (ap.lambda is! Application) return null;
       ap = ap.lambda as Application;
@@ -276,6 +295,22 @@ class Variable extends Expr {
   toString([Expr parent, bool first = false]) => name;
 }
 
+class Deferred extends Expr {
+  Deferred(this._cb);
+  Expr _e;
+  LazyCallback<Expr> _cb;
+  Expr get re {
+    var o = _e ?? (_e = _cb());
+    _cb = null;
+    return o;
+  }
+  
+  List<Expr> get children => re.children;
+  set children(List<Expr> n) => re.children = n;
+  Expr copy() => re.copy();
+  toString([Expr parent, bool first = false]) => re.toString(parent, first);
+}
+
 class ParserError {
   ParserError(this.error, this.where);
   String error;
@@ -306,9 +341,10 @@ const Map<String, String> revEscapeChars = const {
 };
 
 class DefList {
-  DefList(this.out, this.wrap);
+  DefList(this.out, this.wrap, this.names);
   Expr out;
   Lambda wrap;
+  List<String> names = [];
 }
 
 class Parser {
@@ -339,6 +375,33 @@ class Parser {
       }
     }
     return o;
+  }
+  
+  int readInt() {
+    var np = b.readPattern(r"(0o[0-7]+|0b[0-1]+|0x[0-9A-Fa-f]+|[0-9]+)");
+    if (np == null) return null;
+    var pf = np.group(0).length > 2 ? np.group(0).substring(1, 2) : "";
+    var str = pf == "x" || pf == "b" || pf == "o" ? np.group(0).substring(2) : np.group(0);
+    return int.parse(str, radix: pf == "x" ? 16 : pf == "b" ? 2 : pf == "o" ? 8 : 10);
+  }
+  
+  Lambda readCharLiteral(bool signed, bool neg) {
+    if (b.checkRead("\\")) {
+      var i = readInt();
+      if (i == null) {
+        var e = b.read(1);
+        if (!escapeChars.containsKey(e)) throw new ParserError("Unknown escape", srcRef);
+        if (!b.checkRead("'")) throw new ParserError("\"'\" expected", srcRef);
+        return new Lambda.fromInt(escapeChars[e].codeUnitAt(0) * (neg ? -1 : 1), signed);
+      }
+      var o = new Lambda.fromInt(readInt() * (neg ? -1 : 1), signed);
+      if (!b.checkRead("'")) throw new ParserError("\"'\" expected", srcRef);
+      return o;
+    } else {
+      var e = b.read(1);
+      if (!b.checkRead("'")) throw new ParserError("\"'\" expected", srcRef);
+      return new Lambda.fromInt(e.codeUnitAt(0) * (neg ? -1 : 1), signed);
+    }
   }
   
   File findSourceFile(String name) {
@@ -382,11 +445,10 @@ class Parser {
         rv.skip(1).fold(
           new Application(
             new Application(new Variable("f"), new Lambda.fromInt(rv[0])),
-            new Variable("e")),
-            (prev, e) {
-            return new Application(
-              new Application(new Variable("f"), new Lambda.fromInt(e)), prev);
-          }
+            new Variable("e")
+          ),
+          (prev, e) => new Application(
+              new Application(new Variable("f"), new Lambda.fromInt(e)), prev)
         )
       ));
     } else if (b.checkRead("[")) {
@@ -421,30 +483,19 @@ class Parser {
         o = new Application(o, exp);
       });
       return new Lambda("tpl", o);
+    } else if (b.checkRead("+") || b.checkRead("-")) {
+      var sign = b.raw.substring(b.offset - 1, b.offset);
+      if (b.checkRead("'")) return readCharLiteral(true, sign == "-");
+      int n = readInt();
+      if (n == null) throw new ParserError("Number expected", srcRef);
+      return new Lambda.fromInt(n * (sign == "-" ? -1 : 1), true);
     } else if (b.checkRead("'")) {
-      if (b.checkRead("\\")) {
-        var np = b.readPattern(r"(o[0-7]+|b[0-1]+|x[0-9A-Fa-f]+|[0-9]+)");
-        if (np != null) {
-          var pf = np.group(0).substring(0, 1);
-          var str = pf == "x" || pf == "b" || pf == "o" ? np.group(0).substring(1) : np.group(0);
-          if (!b.checkRead("'")) throw new ParserError("\"'\" expected", srcRef);
-          return new Lambda.fromInt(int.parse(str, radix: pf == "x" ? 16 : pf == "b" ? 2 : pf == "o" ? 8 : 10));
-        } else {
-          var e = b.read(1);
-          if (!escapeChars.containsKey(e)) throw new ParserError("Unknown escape", srcRef);
-          if (!b.checkRead("'")) throw new ParserError("\"'\" expected", srcRef);
-          return new Lambda.fromInt(escapeChars[e].codeUnitAt(0));
-        }
-      } else {
-        var e = b.read(1);
-        if (!b.checkRead("'")) throw new ParserError("\"'\" expected", srcRef);
-        return new Lambda.fromInt(e.codeUnitAt(0));
-      }
+      return readCharLiteral(false, false);
     } else {
-      Match n;
+      int n;
       String v;
-      if ((n = b.readPattern("[0-9]+")) != null) {
-        return new Lambda.fromInt(int.parse(n.group(0)));
+      if ((n = readInt()) != null) {
+        return new Lambda.fromInt(n);
       } else if ((v = b.readWord()) != null) {
         return new Variable(v);
       } else {
@@ -459,6 +510,7 @@ class Parser {
     b.skipWhitespace();
     Expr out;
     Lambda wrap;
+    List<String> names = [];
     while (true) {
       if (b.checkRead("~\\\"")) {
         b.offset--;
@@ -475,8 +527,10 @@ class Parser {
             wrap = ndefs.wrap;
           }
         }
+        names.addAll(ndefs.names);
       } else if (b.checkRead("~\\")) {
         String name = b.readWord();
+        names.add(name);
         if (name == null) throw new ParserError("Name expected", srcRef);
         b.skipWhitespace();
         var e = readExpr();
@@ -494,7 +548,7 @@ class Parser {
       }
       b.skipWhitespace();
     }
-    return new DefList(out, wrap);
+    return new DefList(out, wrap, names);
   }
   
   Expr readBody() {
@@ -609,14 +663,17 @@ class TrashSolver extends Solver {
   
   void solve() {
     bool contStep = true;
+    bool forceDown = false;
     var complexity = 0;
     var ops = 0;
     Expr step(Expr e) {
       complexity++;
       if (e is Lambda) {
+        if (forceDown) return e;
         e.body = step(e.body);
         return e;
       } else if (e is Application) {
+        if (forceDown) return e;
         var oc = contStep;
         var ac = false;
         while (true) {
@@ -628,7 +685,7 @@ class TrashSolver extends Solver {
         contStep = oc || ac;
         
         if (e.lambda is Lambda) {
-          Expr param;
+          var param = new Deferred(() => e.param = step(e.param));
           contStep = true;
           List<Lambda> stack = [];
           Expr rcrCopy(Expr te) {
@@ -642,7 +699,7 @@ class TrashSolver extends Solver {
             } else if (te is Variable) {
               if (te.bound == stack.length) {
                 ops++;
-                return copyShift(param ?? (param = e.param = step(e.param)), stack.length);
+                return copyShift(param, stack.length);
               } else if (te.bound != null && te.bound > stack.length) {
                 te.bound--;
               }
@@ -651,15 +708,59 @@ class TrashSolver extends Solver {
           }
           return rcrCopy((e.lambda as Lambda).body);
         } else {
-          if (!ac) e.param = step(e.param);
+          e.param = step(e.param);
         }
         return e;
       } else if (e is Variable) {
         return e;
+      } else if (e is Deferred) {
+        return e.re;
       } else throw "Unknown type";
     }
     
-    while (contStep) {
+    while (contStep && !forceDown) {
+      contStep = false;
+      complexity = 0;
+      ops = 0;
+      try {
+        expr = step(expr);
+      } on StackOverflowError catch(e) {
+        print("Stack overflow!");
+        contStep = true;
+      } on String catch(e) {
+        print(e);
+      }
+    }
+  }
+}
+
+class TraceSolver extends Solver {
+  TraceSolver(Expr expr) : super(expr);
+  
+  void solve() {
+    bool contStep = true;
+    bool forceDown = false;
+    var complexity = 0;
+    var ops = 0;
+    Expr step(Expr e) {
+      complexity++;
+      if (e is Lambda) {
+        if (forceDown) return e;
+        e.body = step(e.body);
+        return e;
+      } else if (e is Application) {
+        return e;
+      } else if (e is Variable) {
+        if (e.bound == null) {
+          throw "die";
+        }
+        return e;
+      } else if (e is Deferred) {
+        return e.re;
+      } else throw "Unknown type";
+    }
+    
+    while (contStep && !forceDown) {
       contStep = false;
       complexity = 0;
       ops = 0;
@@ -669,7 +770,6 @@ class TrashSolver extends Solver {
         print("Stack overflow!");
         contStep = true;
       }
-      print("cmp ${complexity} $ops");
     }
   }
 }

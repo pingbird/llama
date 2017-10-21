@@ -1,5 +1,6 @@
 ~\"stdutil.lf"
 ~\"stdbool.lf"
 ~\"stdint.lf"
+~\"stdsignedint.lf"
 ~\"stdtuple.lf"
 ~\"stdvec.lf"

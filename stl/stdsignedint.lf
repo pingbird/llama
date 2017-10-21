@@ -1,0 +1,70 @@
+~\sSucc(\n
+    n (\a\b\sgn sgn (iSucc a) b)
+)
+
+~\sPred(\n
+    n \a\b \sgn sgn a~iSucc b
+)
+
+~\sAdd(\m\n
+    m \ma\mb n \na\nb \sgn sgn (iAdd ma na)~iAdd mb nb
+)
+
+~\sNeg(\n
+    n \a\b \sgn sgn b a
+)
+
+~\sNormalize(\n
+    n \a\b \sgn sgn (iSub a b) (iSub b a)
+)
+
+~\sSub(\m\n
+    sAdd m~sNeg n
+)
+
+~\sMul(\m\n
+    m \ma\mb n \na\nb iIsZero ma (
+        \sgn sgn (iMul mb nb)~iMul mb na
+    ) \sgn sgn (iMul ma na)~iMul ma nb
+)
+
+~\sIsZero(\n
+    sNormalize n \a\b bAnd (iIsZero a)~iIsZero b
+)
+
+~\sIsNeg(\n
+    n \a\b iIsGT b a
+)
+
+~\sIsPos(\n
+    n \a\b iIsGT a b
+)
+
+~\sIsGT(\m\n
+    sIsNeg~sSub n m
+)
+
+~\sIsLT(\m\n
+    sIsNeg~sSub m n
+)
+
+~\sIsGE(\m\n
+    bNot~sIsLT m n
+)
+
+~\sIsLE(\m\n
+    bNot~sIsGT m n
+)
+
+~\sIsEQ(\m\n
+    sNormalize m \ma\mb sNormalize n \na\nb
+        bAnd (iIsEQ ma na)~iIsEQ mb nb
+)
+
+~\sIsNEQ(\m\n
+    bNot~sIsEQ m n
+)
+
+~\sUnsigned(\n
+    sNormalize n \a\b a
+)

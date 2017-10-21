@@ -71,3 +71,7 @@
         (iIsZero~iSub n m)
         (bNot~iIsZero~iSub m n)
 )
+
+~\iSigned(\n
+    \sgn sgn n 0
+)

@@ -71,6 +71,8 @@ sIsGE x y // return x >= y
 sIsLE x y // return x <= y
 sIsEQ x y // return x == y
 sIsNEQ x y // return x != y
+sIsNeg x // returns true if x is less than 0
+sIsPos x // returns true if x is greater than 0
 sNormalize x // normalizes x so that at least one side is zero
 sUnsigned x // converts x to unsigned number
 ```

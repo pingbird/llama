@@ -61,9 +61,14 @@ turns into
 ```
 
 #### Vectors
-Vectors can be created using square brackets<br/>
+Vectors are dynamically sized right-fold lists and can be created using square brackets<br/>
 example: `[1 2 3]` = `\f\x f 1~f 2~f 3 x`<br/>
 syntax: `[expr...]`
+
+#### Tuples
+Tuples are like vectors but statically sized and it's easier to extract specific elements.<br/>
+example: `<1 2 3>` = `\f f 1 2 3`<br/>
+syntax: `<expr...>`
 
 #### Numbers
 Numbers use basic church encoding so `1` means `\f\x f x` and `3` means `\f\x f~f~f x`<br/>
@@ -76,6 +81,18 @@ example:
 '{' // character
 ```
 
+#### Signed numbers
+Signed numbers are pairs of numbers where the first element is the positive side and second element is the negative.<br/>
+example: 
+```
++69 = <69 0>
+-69 = <0 69>
+-0x69 = <0 0x69>
++'A' = <'A' 0>
+```
+
+Some standard functions may return signed numbers that aren't normalized, ie when neither of the elements in the pair are 0 and to fix this use `sNormalize`
+
 #### Strings
 String literals are equivalent to a vector of char codes<br/>
 Both character literals and strings support the common escapes `\a \b \f \n \r \t \v \\ \"` and also number escapes `\123 \x7b \b1111011`<br/>
@@ -85,11 +102,11 @@ example: `"foo"` = `['f' 'o' 'o']`<br/>
 Used to include a whole file as a llama, the file must have a main body</br>
 syntax: `~"filename"`<br/>
 example:
-######foo.lm
+###### foo.lm
 ```
 succ 1
 ```
-######bar.lm
+###### bar.lm
 ```
 succ \"foo.lm" // result is 3
 ```
@@ -104,7 +121,7 @@ example:
     \f\x a f ~b f x
 )
 ```
-###### bar.lm
+######  bar.lm
 ```
 ~\"foo.lm"
 concat "foo" "bar" // result is "foobar"

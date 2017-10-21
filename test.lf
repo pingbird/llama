@@ -1,3 +1,26 @@
 ~\"stdlib.lf"
 
-vRemoveAt [1 2 3 4] 2
+~\i (\x x (\x\y x) (\x\y\z x z (y z)))
+
+~\program "i"
+
+~\parse(\parse\prgm
+    ~\next (vRemoveFirst str)
+    (vFirst prgm 0) (
+        //~\lm (parse parse~vRemoveFirst prgm)
+        //~\pr (parse parse~lm tSecond)
+        //<((lm tFirst)~pr tFirst)~pr tSecond>
+        die
+    ) (
+        <(\x x (\x\y x) \x\y\z x z~y z) ~vRemoveFirst prgm>
+    )
+)
+
+~\decode(\str
+    vMap str (\e iIsEQ e '*')
+)
+
+// parse parse (decode program)
+
+// vIsEQ
+0

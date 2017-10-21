@@ -39,7 +39,7 @@
 )
 
 ~\vReverse(\v
-    vFold v [] (\st\e vInsertStart st e)
+    v (\e\nx vInsertEnd nx e) []
 )
 
 ~\vLength(\v

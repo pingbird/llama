@@ -7,7 +7,7 @@ import 'package:lambdafuck/llama.dart';
 import 'package:worker/worker.dart';
 
 const Map<String, String> tests = const {
-  'while 0 (\\i iIsNEQ (iMul i 2) 8) (\\i iSucc i)': '4',
+  //'while 0 (\\i iIsNEQ (iMul i 2) 8) (\\i iSucc i)': '4',
   
   '[(true 1 2) (false 1 2)]': '[1 2]',
   '[(bNot false) (bNot true)]': '[true false]',
@@ -29,6 +29,23 @@ const Map<String, String> tests = const {
   '[(iIsLT 0 0) (iIsLT 6 9) (iIsLT 9 6)]': '[false true false]',
   '[(iIsGE 0 0) (iIsGE 6 9) (iIsGE 9 6)]': '[true false true]',
   '[(iIsLE 0 0) (iIsLE 6 9) (iIsLE 9 6)]': '[true true false]',
+  '[(iSigned 0) (iSigned 6) (iSigned 9)]': '[+0 +6 +9]',
+  
+  '[(sSucc +0) (sSucc +6) (sSucc -9)]': '[+1 +7 -8]',
+  '[(sPred +0) (sPred +6) (sPred -9)]': '[-1 +5 -10]',
+  '[(sAdd +10 +4) (sAdd +0 -5) (sAdd +6 -9)]': '[+14 -5 -3]',
+  '[(sSub -10 +4) (sSub +0 -5) (sSub +6 -9)]': '[-14 +5 +15]',
+  '[(sMul -6 +4) (sMul -7 -7) (sMul -20 +21)]': '[-24 +49 -420]',
+  '[(sIsZero +0) (sIsZero +1) (sIsZero -1)]': '[true false false]',
+  '[(sIsPos +0) (sIsPos +1) (sIsPos -1)]': '[false true false]',
+  '[(sIsNeg +0) (sIsNeg +1) (sIsNeg -1)]': '[false false true]',
+  '[(sIsEQ +0 +0) (sIsEQ +1 +2) (sIsEQ +3 -3) (sIsEQ +1 +1)]': '[true false false true]',
+  '[(sIsNEQ +0 +0) (sIsNEQ +1 +2) (sIsNEQ +3 -3) (sIsNEQ +1 +1)]': '[false true true false]',
+  '[(sIsGT +0 +0) (sIsGT +6 -9) (sIsGT +9 +6) (sIsGT -9 -6)]': '[false true true false]',
+  '[(sIsLT +0 +0) (sIsLT +6 -9) (sIsLT +9 +6) (sIsLT -9 -6)]': '[false false false true]',
+  '[(sIsGE +0 +0) (sIsGE +6 -9) (sIsGE +9 +6) (sIsGE -9 -6)]': '[true true true false]',
+  '[(sIsLE +0 +0) (sIsLE +6 -9) (sIsLE +9 +6) (sIsLE -9 -6)]': '[true false false true]',
+  '[(sUnsigned +0) (sUnsigned +20) (sUnsigned -20)]': '[0 20 0]',
   
   '[(tTuple 4 a b c d) (tTuple 2 a b) (tTuple 0)]': '[<a b c d> <a b> <>]',
   '[(tVector 0 <>) (tVector 1 <a>) (tVector 3 <a b c>)]': '[[] [a] [a b c]]',
@@ -202,7 +219,8 @@ class MyTask implements Task {
 
   MyTask(this.code);
   
-  String execute () {
+  String execute() {
+    //print("testing ${code}..");
     return (new TrashSolver(
       new Parser().parse("test", "~\\\"stdlib.lf\"\n${code}")
         ..bind())
@@ -212,7 +230,7 @@ class MyTask implements Task {
 
 main() async {
   var t = new DateTime.now();
-  var worker = new Worker(poolSize: 4, spawnLazily: false);
+  var worker = new Worker(poolSize: 1, spawnLazily: false);
   await Future.wait(tests.keys.map((code) async {
     var f = worker.handle(new MyTask(code));
     String res = await f;
@@ -220,6 +238,7 @@ main() async {
       print("Mismatch!");
       print("code:\n$code");
       print("expected:\n${tests[code]}");
+      print("got:\n${res}");
     }
   }));
   print("done");
