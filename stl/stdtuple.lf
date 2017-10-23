@@ -26,13 +26,13 @@
 ~\tGet(\i\p
     tVararg i \v
         v (\e\nx
-            \idx iIsZero idx e~nx~iPred idx
+            \idx uIsZero idx e~nx~uPred idx
         ) (\idx\x x) p
 )
 
 ~\tSet(\i\t\n\sv
     t~tVararg i~\v\tpl v (\e\nx
-        \idx\st nx (iSucc idx)~st (iIsEQ idx n sv e)
+        \idx\st nx (uSucc idx)~st (uEQ idx n sv e)
     ) (\idx\st st) 0 tpl
 )
 

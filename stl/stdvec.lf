@@ -35,7 +35,7 @@
 )
 
 ~\vIndexify(\v
-    vFoldMap v 0 \st\e tPair (iSucc st)~tPair st e
+    vFoldMap v 0 \st\e tPair (uSucc st)~tPair st e
 )
 
 ~\vReverse(\v
@@ -54,31 +54,31 @@
 
 ~\vTake(\v\i
     v (\e\nx
-        \idx iIsZero idx []~vInsertStart (nx~iPred idx) e
+        \idx uIsZero idx []~vInsertStart (nx~uPred idx) e
     ) (\idx []) i
 )
 
 ~\vSkip(\v\i
     v (\e\nx
-        \idx iIsZero idx (vInsertStart (nx~iPred idx) e)~nx~iPred idx
+        \idx uIsZero idx (vInsertStart (nx~uPred idx) e)~nx~uPred idx
     ) (\idx []) i
 )
 
 ~\vGet(\v\i\d
     v (\e\nx
-        \idx iIsZero idx e~nx~iPred idx
+        \idx uIsZero idx e~nx~uPred idx
     ) (\idx d) i
 )
 
-~\vWhere(\v\l
-    v (\e\nx
-        l e (vInsertStart nx e) nx
-    ) []
+~\vWhere(\v\fn
+    \f\l v (\e\nx
+        fn e (f e nx) nx
+    ) l
 )
 
 ~\vSet(\v\i\d
     vMap (vIndexify v) \e
-        iIsEQ (e tFirst) i d (e tSecond)
+        uEQ (e tFirst) i d (e tSecond)
 )
 
 ~\vGenerate(\j\e
@@ -88,8 +88,8 @@
 )
 
 ~\vGenerateRange(\i\j
-    \f\l (iSub j i) (\nx\st
-        f (iAdd st i)~nx (iSucc st)
+    \f\l (uSub j i) (\nx\st
+        f (uAdd st i)~nx (uSucc st)
     ) (\st l) 0
 )
 
@@ -98,27 +98,33 @@
 )
 
 ~\vRemoveLast(\v
-    vTake v (iPred~vLength v)
+    vTake v (uPred~vLength v)
 )
 
 ~\vRemoveFirst(\v
     vSkip v 1
 )
 
+~\vRemoveWhere(\v\fn
+    \f\l v (\e\nx
+        fn e nx (f e nx)
+    ) l
+)
+
 ~\vSlice(\v\start\end
-    vTake (vSkip v start)~iSub end start
+    vTake (vSkip v start)~uSub end start
 )
 
 ~\vLast(\v\d
-    vIsEmpty v d~vGet v (iPred~vLength v) d
+    vIsEmpty v d~vGet v (uPred~vLength v) d
 )
 
 ~\vFirst(\v\d
     v (\e\nx e) d
 )
 
-~\vIsEQ(\cmp\a\b
-    bAnd (iIsEQ (vLength a)~vLength b)~vFold a <true b> (\st\e
+~\vEQ(\cmp\a\b
+    bAnd (uEQ (vLength a)~vLength b)~vFold a <true b> (\st\e
         <(bAnd (st tFirst)~cmp e~vFirst (st tSecond) 0) ~vSkip (st tSecond) 1>
     ) tFirst
 )
@@ -145,6 +151,14 @@
 
 ~\vRemoveAt(\v\i
     vExpand (vIndexify v) (\t
-        (iIsEQ (t tFirst) i) [] [~t tSecond]
+        (uEQ (t tFirst) i) [] [~t tSecond]
     )
+)
+
+~\vAny(\v\l
+    v (\e\nx l e true nx) false
+)
+
+~\vFirstWhere(\v\l\d
+    v (\e\nx l e e nx) d
 )

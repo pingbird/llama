@@ -7,7 +7,7 @@ import 'package:lambdafuck/llama.dart';
 import 'package:worker/worker.dart';
 
 const Map<String, String> tests = const {
-  //'while 0 (\\i iIsNEQ (iMul i 2) 8) (\\i iSucc i)': '4',
+  //'while 0 (\\i uIsNEQ (uMul i 2) 8) (\\i uSucc i)': '4',
   
   '[(true 1 2) (false 1 2)]': '[1 2]',
   '[(bNot false) (bNot true)]': '[true false]',
@@ -15,37 +15,37 @@ const Map<String, String> tests = const {
   '[(bOr false false) (bOr false true) (bOr true false) (bOr true true)]': '[false true true true]',
   '[(bXor false false) (bXor false true) (bXor true false) (bXor true true)]': '[false true true false]',
   
-  '[(iSucc 0) (iSucc 7)]': '[1 8]',
-  '[(iPred 0) (iPred 1) (iPred 8)]': '[0 0 7]',
-  '[(iAdd 0 0) (iAdd 0 5) (iAdd 6 9)]': '[0 5 15]',
-  '[(iSub 0 0) (iSub 0 5) (iSub 13 6)]': '[0 0 7]',
-  '[(iMul 0 0) (iMul 1 7) (iMul 20 21)]': '[0 7 420]',
-  //'[(iDiv 0 0) (iDiv 1 7) (iDiv 10 2)]': '[0 0 5]',
-  '[(iPow 0 0) (iPow 2 8) (iPow 10 3)]': '[1 256 1000]',
-  '[(iIsZero 0) (iIsZero 1) (iIsZero 2)]': '[true false false]',
-  '[(iIsEQ 0 0) (iIsEQ 1 2) (iIsEQ 3 3)]': '[true false true]',
-  '[(iIsNEQ 0 0) (iIsNEQ 1 2) (iIsNEQ 3 3)]': '[false true false]',
-  '[(iIsGT 0 0) (iIsGT 6 9) (iIsGT 9 6)]': '[false false true]',
-  '[(iIsLT 0 0) (iIsLT 6 9) (iIsLT 9 6)]': '[false true false]',
-  '[(iIsGE 0 0) (iIsGE 6 9) (iIsGE 9 6)]': '[true false true]',
-  '[(iIsLE 0 0) (iIsLE 6 9) (iIsLE 9 6)]': '[true true false]',
-  '[(iSigned 0) (iSigned 6) (iSigned 9)]': '[+0 +6 +9]',
+  '[(uSucc 0) (uSucc 7)]': '[1 8]',
+  '[(uPred 0) (uPred 1) (uPred 8)]': '[0 0 7]',
+  '[(uAdd 0 0) (uAdd 0 5) (uAdd 6 9)]': '[0 5 15]',
+  '[(uSub 0 0) (uSub 0 5) (uSub 13 6)]': '[0 0 7]',
+  '[(uMul 0 0) (uMul 1 7) (uMul 20 21)]': '[0 7 420]',
+  //'[(uDiv 0 0) (uDiv 1 7) (uDiv 10 2)]': '[0 0 5]',
+  '[(uPow 0 0) (uPow 2 8) (uPow 10 3)]': '[1 256 1000]',
+  '[(uIsZero 0) (uIsZero 1) (uIsZero 2)]': '[true false false]',
+  '[(uEQ 0 0) (uEQ 1 2) (uEQ 3 3)]': '[true false true]',
+  '[(uNEQ 0 0) (uNEQ 1 2) (uNEQ 3 3)]': '[false true false]',
+  '[(uGT 0 0) (uGT 6 9) (uGT 9 6)]': '[false false true]',
+  '[(uLT 0 0) (uLT 6 9) (uLT 9 6)]': '[false true false]',
+  '[(uGE 0 0) (uGE 6 9) (uGE 9 6)]': '[true false true]',
+  '[(uLE 0 0) (uLE 6 9) (uLE 9 6)]': '[true true false]',
+  '[(uSigned 0) (uSigned 6) (uSigned 9)]': '[+0 +6 +9]',
   
-  '[(sSucc +0) (sSucc +6) (sSucc -9)]': '[+1 +7 -8]',
-  '[(sPred +0) (sPred +6) (sPred -9)]': '[-1 +5 -10]',
-  '[(sAdd +10 +4) (sAdd +0 -5) (sAdd +6 -9)]': '[+14 -5 -3]',
-  '[(sSub -10 +4) (sSub +0 -5) (sSub +6 -9)]': '[-14 +5 +15]',
-  '[(sMul -6 +4) (sMul -7 -7) (sMul -20 +21)]': '[-24 +49 -420]',
-  '[(sIsZero +0) (sIsZero +1) (sIsZero -1)]': '[true false false]',
-  '[(sIsPos +0) (sIsPos +1) (sIsPos -1)]': '[false true false]',
-  '[(sIsNeg +0) (sIsNeg +1) (sIsNeg -1)]': '[false false true]',
-  '[(sIsEQ +0 +0) (sIsEQ +1 +2) (sIsEQ +3 -3) (sIsEQ +1 +1)]': '[true false false true]',
-  '[(sIsNEQ +0 +0) (sIsNEQ +1 +2) (sIsNEQ +3 -3) (sIsNEQ +1 +1)]': '[false true true false]',
-  '[(sIsGT +0 +0) (sIsGT +6 -9) (sIsGT +9 +6) (sIsGT -9 -6)]': '[false true true false]',
-  '[(sIsLT +0 +0) (sIsLT +6 -9) (sIsLT +9 +6) (sIsLT -9 -6)]': '[false false false true]',
-  '[(sIsGE +0 +0) (sIsGE +6 -9) (sIsGE +9 +6) (sIsGE -9 -6)]': '[true true true false]',
-  '[(sIsLE +0 +0) (sIsLE +6 -9) (sIsLE +9 +6) (sIsLE -9 -6)]': '[true false false true]',
-  '[(sUnsigned +0) (sUnsigned +20) (sUnsigned -20)]': '[0 20 0]',
+  '[(iSucc +0) (iSucc +6) (iSucc -9)]': '[+1 +7 -8]',
+  '[(iPred +0) (iPred +6) (iPred -9)]': '[-1 +5 -10]',
+  '[(iAdd +10 +4) (iAdd +0 -5) (iAdd +6 -9)]': '[+14 -5 -3]',
+  '[(iSub -10 +4) (iSub +0 -5) (iSub +6 -9)]': '[-14 +5 +15]',
+  '[(iMul -6 +4) (iMul -7 -7) (iMul -20 +21)]': '[-24 +49 -420]',
+  '[(iIsZero +0) (iIsZero +1) (iIsZero -1)]': '[true false false]',
+  '[(iIsPos +0) (iIsPos +1) (iIsPos -1)]': '[false true false]',
+  '[(iIsNeg +0) (iIsNeg +1) (iIsNeg -1)]': '[false false true]',
+  '[(iEQ +0 +0) (iEQ +1 +2) (iEQ +3 -3) (iEQ +1 +1)]': '[true false false true]',
+  '[(iNEQ +0 +0) (iNEQ +1 +2) (iNEQ +3 -3) (iNEQ +1 +1)]': '[false true true false]',
+  '[(iGT +0 +0) (iGT +6 -9) (iGT +9 +6) (iGT -9 -6)]': '[false true true false]',
+  '[(iLT +0 +0) (iLT +6 -9) (iLT +9 +6) (iLT -9 -6)]': '[false false false true]',
+  '[(iGE +0 +0) (iGE +6 -9) (iGE +9 +6) (iGE -9 -6)]': '[true true true false]',
+  '[(iLE +0 +0) (iLE +6 -9) (iLE +9 +6) (iLE -9 -6)]': '[true false false true]',
+  '[(iUnsigned +0) (iUnsigned +20) (iUnsigned -20)]': '[0 20 0]',
   
   '[(tTuple 4 a b c d) (tTuple 2 a b) (tTuple 0)]': '[<a b c d> <a b> <>]',
   '[(tVector 0 <>) (tVector 1 <a>) (tVector 3 <a b c>)]': '[[] [a] [a b c]]',
@@ -57,7 +57,7 @@ const Map<String, String> tests = const {
   '[\n'
     '(tVararg 4 (\\v v) a b c d)\n'
     '(tVararg 0 (\\v v))\n'
-    '(tVararg 3 (\\v vMap v iSucc) 2 3 4)\n'
+    '(tVararg 3 (\\v vMap v uSucc) 2 3 4)\n'
     ']' : '[[a b c d] [] [3 4 5]]',
   '[\n'
     '(tSet 3 <0 1 2> 0 1)\n'
@@ -66,9 +66,9 @@ const Map<String, String> tests = const {
     ']' : '[<1 1 2> <0 1 2 3> <0 1 2 3 5>]',
   
   '[\n'
-    '(vFold [] 0 iAdd)\n'
-    '(vFold [1 2 3] 0 iAdd)\n'
-    '(vFold [1 2 3] 2 iMul)\n'
+    '(vFold [] 0 uAdd)\n'
+    '(vFold [1 2 3] 0 uAdd)\n'
+    '(vFold [1 2 3] 2 uMul)\n'
     ']' : '[0 6 12]',
   '[\n'
     '(vConcat [] [])\n'
@@ -77,8 +77,8 @@ const Map<String, String> tests = const {
     ']' : '[[] [0 1 2 3 4 5] [4 2 0]]',
   '[\n'
     '(vExpand [] (\\e []))\n'
-    '(vExpand [0 1 2 3 4 5] (\\e iIsGT e 3 [e] []))\n'
-    '(vExpand [1 5 9] (\\e [e (iSucc e)]))\n'
+    '(vExpand [0 1 2 3 4 5] (\\e uGT e 3 [e] []))\n'
+    '(vExpand [1 5 9] (\\e [e (uSucc e)]))\n'
     ']' : '[[] [4 5] [1 2 5 6 9 10]]',
   '[\n'
     '(vInsertStart [] 0)\n'
@@ -98,7 +98,7 @@ const Map<String, String> tests = const {
   '[\n'
     '(vFirstWhere [] (\\e true) 0)\n'
     '(vFirstWhere [1 2 3] (\\e true) 0)\n'
-    '(vFirstWhere [1 2 3 4 5] (\\e iIsGT e 3) 0)\n'
+    '(vFirstWhere [1 2 3 4 5] (\\e uGT e 3) 0)\n'
     ']' : '[0 1 4]',
   '[\n'
     '(vTake [] 1)\n'
@@ -117,13 +117,18 @@ const Map<String, String> tests = const {
     ']' : '[0 1 5]',
   '[\n'
     '(vWhere [0 1 2] (\\e false))\n'
-    '(vWhere [1 2 3 4 5 6] (\\e iIsGT e 3))\n'
-    '(vWhere [0 1 0 3 5 0] iIsZero)\n'
+    '(vWhere [1 2 3 4 5 6] (\\e uGT e 3))\n'
+    '(vWhere [0 1 0 3 5 0] uIsZero)\n'
     ']' : '[[] [4 5 6] [0 0 0]]',
   '[\n'
-    '(vFoldMap [2 1 2 1] 0 \\st\\e <(iSucc st) (iAdd st e)>)\n'
-    '(vFoldMap [4 5 6 7] 1 \\st\\e <e (iAdd st e)>)\n'
-    '(vFoldMap [4 5 6 7] 1 \\st\\e <e (iMul st e)>)\n'
+    '(vRemoveWhere [0 1 2] (\\e true))\n'
+    '(vRemoveWhere [1 2 3 4 5 6] (\\e uGT e 3))\n'
+    '(vRemoveWhere [0 1 0 3 5 0] uIsZero)\n'
+    ']' : '[[] [1 2 3] [1 3 5]]',
+  '[\n'
+    '(vFoldMap [2 1 2 1] 0 \\st\\e <(uSucc st) (uAdd st e)>)\n'
+    '(vFoldMap [4 5 6 7] 1 \\st\\e <e (uAdd st e)>)\n'
+    '(vFoldMap [4 5 6 7] 1 \\st\\e <e (uMul st e)>)\n'
     ']' : '[[2 2 4 4] [5 9 11 13] [4 20 30 42]]',
   '[\n'
     '(vIndexify [])\n'
@@ -176,22 +181,22 @@ const Map<String, String> tests = const {
     '(vFirst [1 2 3] 4)\n'
     ']' : '[6 1 1]',
   '[\n'
-    '(vIsEQ iIsEQ [] [])\n'
-    '(vIsEQ iIsEQ [1 2] [3 4])\n'
-    '(vIsEQ iIsEQ [1 2 3] [1 2])\n'
-    '(vIsEQ iIsEQ [1 2 3 4] [1 2 3 4])\n'
+    '(vEQ uEQ [] [])\n'
+    '(vEQ uEQ [1 2] [3 4])\n'
+    '(vEQ uEQ [1 2 3] [1 2])\n'
+    '(vEQ uEQ [1 2 3 4] [1 2 3 4])\n'
     ']' : '[true false false true]',
   '[\n'
     '(vTakeWhile [0 1 2] (\\e false))\n'
     '(vTakeWhile [0 1 2] (\\e true))\n'
-    '(vTakeWhile [1 2 3 4 5 6] (\\e iIsLT e 4))\n'
-    '(vTakeWhile [0 0 0 3 5 0] iIsZero)\n'
+    '(vTakeWhile [1 2 3 4 5 6] (\\e uLT e 4))\n'
+    '(vTakeWhile [0 0 0 3 5 0] uIsZero)\n'
     ']' : '[[] [0 1 2] [1 2 3] [0 0 0]]',
   '[\n'
     '(vSkipWhile [0 1 2] (\\e true))\n'
     '(vSkipWhile [0 1 2] (\\e false))\n'
-    '(vSkipWhile [1 2 3 4 5 6] (\\e iIsLT e 4))\n'
-    '(vSkipWhile [0 0 0 3 5 0] (\\e iIsZero e))\n'
+    '(vSkipWhile [1 2 3 4 5 6] (\\e uLT e 4))\n'
+    '(vSkipWhile [0 0 0 3 5 0] (\\e uIsZero e))\n'
     ']' : '[[] [0 1 2] [4 5 6] [3 5 0]]',
   '[\n'
     '(vInsertAt [] 0 1)\n'
@@ -201,9 +206,9 @@ const Map<String, String> tests = const {
     '(vInsertAt [1 2 3 4] 2 9)\n'
     ']' : '[[1] [1] [2 1] [1 2] [1 2 9 3 4]]',
   '[\n'
-    '(vReduce [] iAdd 0)\n'
-    '(vReduce [0 1 2 3] iAdd 0)\n'
-    '(vReduce [2 1 2 3] iMul 0)\n'
+    '(vReduce [] uAdd 0)\n'
+    '(vReduce [0 1 2 3] uAdd 0)\n'
+    '(vReduce [2 1 2 3] uMul 0)\n'
     ']' : '[0 6 12]',
   '[\n'
     '(vRemoveAt [] 0)\n'
@@ -212,6 +217,72 @@ const Map<String, String> tests = const {
     '(vRemoveAt [1] 1)\n'
     '(vRemoveAt [1 2 3 4] 2)\n'
     ']' : '[[] [] [] [1] [1 2 4]]',
+  '[\n'
+    '(vAny [] uIsZero)\n'
+    '(vAny [1] uIsZero)\n'
+    '(vAny [0] uIsZero)\n'
+    '(vAny [1 2 0 3] uIsZero)\n'
+    ']' : '[false false true true]',
+  '[\n'
+    '(vFirstWhere [] (\\e uGT e 3) 0)\n'
+    '(vFirstWhere [1 2 3] (\\e uGT e 3) 0)\n'
+    '(vFirstWhere [1 2 3 4 5] (\\e uGT e 3) 0)\n'
+    '(vFirstWhere [3 2 9 2] (\\e uGT e 3) 0)\n'
+    ']' : '[0 0 4 9]',
+  
+  '[\n'
+    '(mFromVec uEQ [] (\\e e) (\\e uMul e e))\n'
+    '(mFromVec uEQ [1] (\\e e) (\\e uMul e e))\n'
+    '(mFromVec uEQ [1 2 3 4] (\\e e) (\\e uMul e e))\n'
+    ']' : '[[] [<1 1>] [<1 1> <2 4> <3 9> <4 16>]]',
+  '[\n'
+    '(mSet uEQ [] 0 1)\n'
+    '(mSet uEQ [<1 2>] 0 1)\n'
+    '(mSet uEQ [<1 2> <2 3>] 1 3)\n'
+    ']' : '[[<0 1>] [<1 2> <0 1>] [<1 3> <2 3>]]',
+  '[\n'
+    '(mKeys [])\n'
+    '(mKeys [<0 1>])\n'
+    '(mKeys [<0 1> <1 2>])\n'
+    ']' : '[[] [0] [0 1]]',
+  '[\n'
+    '(mValues [])\n'
+    '(mValues [<0 1>])\n'
+    '(mValues [<0 1> <1 2>])\n'
+    ']' : '[[] [1] [1 2]]',
+  '[\n'
+    '(mGet uEQ [] 0 0)\n'
+    '(mGet uEQ [<0 1>] 0 0)\n'
+    '(mGet uEQ [<0 1> <3 2>] 3 0)\n'
+    ']' : '[0 1 2]',
+  '[\n'
+    '(mExists uEQ [] 0)\n'
+    '(mExists uEQ [<0 1>] 0)\n'
+    '(mExists uEQ [<0 1> <3 2>] 2)\n'
+    '(mExists uEQ [<0 1> <3 2> <2 3>] 2)\n'
+    ']' : '[false true false true]',
+  '[\n'
+    '(mContains uEQ [] 0)\n'
+    '(mContains uEQ [<0 1>] 0)\n'
+    '(mContains uEQ [<0 1> <3 2>] 2)\n'
+    '(mContains uEQ [<0 1> <3 2> <2 3>] 2)\n'
+    ']' : '[false false true true]',
+  '[\n'
+    '(mRemove uEQ [] 0)\n'
+    '(mRemove uEQ [<1 2>] 0)\n'
+    '(mRemove uEQ [<1 2> <2 3>] 1)\n'
+    '(mRemove uEQ [<1 2> <3 2> <2 3>] 3)\n'
+    ']' : '[[] [<1 2>] [<2 3>] [<1 2> <2 3>]]',
+  '[\n'
+    '(mAddFromVec uEQ [] [] (\\e e) (\\e uMul e e))\n'
+    '(mAddFromVec uEQ [<0 0>] [1] (\\e e) (\\e uMul e e))\n'
+    '(mAddFromVec uEQ [<2 5>] [1 2 3] (\\e e) (\\e uMul e e))\n'
+    ']' : '[[] [<0 0> <1 1>] [<2 4> <1 1> <3 9>]]',
+  '[\n'
+    '(mAddAll uEQ [] [<3 3>])\n'
+    '(mAddAll uEQ [<0 0> <1 1> <2 2>] [<3 3>])\n'
+    '(mAddAll uEQ [<0 0> <1 1> <2 2>] [<1 3> <3 3>])\n'
+    ']' : '[[<3 3>] [<0 0> <1 1> <2 2> <3 3>] [<0 0> <1 3> <2 2> <3 3>]]',
 };
 
 class MyTask implements Task {
@@ -230,7 +301,7 @@ class MyTask implements Task {
 
 main() async {
   var t = new DateTime.now();
-  var worker = new Worker(poolSize: 1, spawnLazily: false);
+  var worker = new Worker(poolSize: 8, spawnLazily: false);
   await Future.wait(tests.keys.map((code) async {
     var f = worker.handle(new MyTask(code));
     String res = await f;

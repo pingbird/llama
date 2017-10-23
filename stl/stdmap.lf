@@ -1,0 +1,53 @@
+~\mSet(\cmp\m\k\ne
+    \f\l m (\e\nx\st
+        cmp (e tFirst) k (
+            f <k ne>~nx true
+        )~f e~nx st
+    ) (\st st l~f <k ne> l) false
+)
+
+~\mAddFromVec(\cmp\ma\vec\k\v
+    vFold vec ma \st\e mSet cmp st (k e)~v e
+)
+
+~\mFromVec(\cmp\vec\k\v
+    mAddFromVec cmp [] vec k v
+)
+
+~\mKeys(\m
+    vMap m \e e tFirst
+)
+
+~\mValues(\m
+    vMap m \e e tSecond
+)
+
+~\mGet(\cmp\m\k\d
+    vFirstWhere m (\e cmp k~e tFirst) <null d> tSecond
+)
+
+~\mExists(\cmp\m\k
+    vAny m (\e cmp k~e tFirst)
+)
+
+~\mContains(\cmp\m\k
+    vAny m (\e cmp k~e tSecond)
+)
+
+~\mAddAll(\cmp\ma\mb
+    vFold mb ma (\st\e
+        mSet cmp st (e tFirst)~e tSecond
+    )
+)
+
+~\mRemove(\cmp\m\k
+    vRemoveWhere m \e cmp k~e tFirst
+)
+
+~\mPutIfAbsent(\cmp\m\k\e
+    \f\l m (\e\nx\st
+        cmp (e tFirst) k (
+            f e~nx true
+        ) f e~nx st
+    ) (\st st l~f <k e>) false
+)

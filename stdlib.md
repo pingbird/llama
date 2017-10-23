@@ -39,20 +39,20 @@ bXor x y // returns x ^ y
 
 ###Int
 ```
-iSucc x // returns x + 1
-iPred x // returns x - 1
-iAdd x y // returns x + y
-iSub x y // returns x - y
-iMul x y // returns x * y
-iDiv x y // returns x / y
-iExp x y // returns exp(x, y)
-iIsZero x // returns x == 0
-iIsGT x y // return x > y
-iIsLT x y // return x < y
-iIsGE x y // return x >= y
-iIsLE x y // return x <= y
-iIsEQ x y // return x == y
-iSigned x // converts x to signed
+uSucc x // returns x + 1
+uPred x // returns x - 1
+uAdd x y // returns x + y
+uSub x y // returns x - y
+uMul x y // returns x * y
+uDiv x y // returns x / y
+uExp x y // returns exp(x, y)
+uIsZero x // returns x == 0
+uIsGT x y // return x > y
+uIsLT x y // return x < y
+uIsGE x y // return x >= y
+uIsLE x y // return x <= y
+uIsEQ x y // return x == y
+uSigned x // converts x to signed
 ```
 
 ###Signed Int
@@ -114,84 +114,28 @@ vRemoveLast v // removes the last element
 vRemoveFirst v // removes the first element
 vRemoveAt v i // removes element at i
 vRemoveRange v start end // removes range of elements
+vRemoveWhere v l // removes elements where l(e) is true
 vInsertEnd v e // inserts e at the end of v
 vInsertStart v e // inserts e at the start of v
 vInsertAt v i e // inserts e into v at i
 vConcat va vb // appends vb to va
 vSlice v start end // returns a slice of v from start to before end
-vEquals cmp a b // returns true if both vectors have the same contents using cmp
+vAny v l // returns true if any l(e) returns true
+vFirstWhere v l d // returns first element where l(e) is true else returns d
+vEQ cmp a b // returns true if both vectors have the same contents using cmp
 ```
 
-~\ded (\code\input
-    ~\jmp (getjmp code)
-
-    ~\jmpFwd (jmp (tGet 3 1))
-    ~\jmpBack (jmp (tGet 3 2))
-
-    ~\indexMap (\v\i
-        (vFirstWhere v (\e iIsEq (e tFirst) i) 0) tSecond
-    )
-
-    ~\codeLength (vLength code)
-
-    ~\pc (tGet 5 0)
-    ~\setPc (\st\v tSet st 5 0 v)
-    ~\ptr (tGet 5 1)
-    ~\setPtr (\st\v tSet st 5 1 v)
-    ~\mem (tGet 5 2)
-    ~\setMem (\st\v tSet st 5 2 v)
-    ~\out (tGet 5 3)
-    ~\setOut (\st\v tSet st 5 3 v)
-    ~\inputIndex (tGet 5 4)
-    ~\setInputIndex (\st\v tSet st 5 4 v)
-
-    ~\byteSucc (\n
-        (iIsEQ n 255) 0 (iSucc n)
-    )
-
-    ~\bytePred (\n
-        (iIsEQ n 0) 255 (iPred n)
-    )
-
-    (while (mkTuple 5
-        0 // pc
-        0 // ptr
-        [0] // mem
-        [] // out
-        0 // inputIndex
-    ) (\st iIsLT (st pc) codeLength) (\st
-        ~\st (
-            ~\inst (vGet code (st pc) null)
-            if (iIsEQ inst '>') (
-                ~\st (setPtr st (iSucc~st ptr))
-                (if (iIsEQ (st ptr) (vLength~st mem))
-                    return setMem st~vInsertEnd (st mem) 0
-                ) (return st)
-            ) if (iIsEQ inst '<') (
-                if (iIsZero~st ptr) (
-                    return setMem st~vInsertStart (st mem) 0
-                ) (
-                    return setPtr st~iPred~st ptr
-                )
-            ) if (iIsEQ inst '+') (
-                return setMem st~vSet (st mem) (st ptr)~byteSucc~vGet (st mem) (st ptr) null
-            ) if (iIsEQ inst '-') (
-                return setMem st~vSet (st mem) (st ptr)~bytePred~vGet (st mem) (st ptr) null
-            ) if (iIsEQ inst '[') (
-                if (iIsZero~vGet (st mem) (st ptr) 0) (
-                    return setPc st~indexMap jmpFwd (st pc)
-                ) (
-                    return st
-                )
-            ) if (iIsEQ inst ']') (
-                return setPc st~indexMap jmpBack (st pc)
-            ) if (iIsEQ inst ',') (
-                ~\st (setMem st~vSet (st mem) (st ptr)~vGet input (st inputIndex) 0)
-                return setInputIndex st~iSucc~st inputIndex
-            ) if (iIsEQ inst '.') (
-                setOut st~vInsertEnd (st out)~vGet (st mem) (st ptr) 0
-            ) st
-        )
-        return setPc st~iSucc (st pc)
-    )) out
-)"++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++." ""
+###Map
+```
+mFromVec cmp vec k v // gets a map where m[k(e)] = v(e)
+mKeys m // gets a vector of all the keys
+mValues m // gets a vector of all the values
+mGet cmp m k d // returns m[k] or d if absent where cmp is the comparison function to use on keys, for example uEQ
+mSet cmp m k e // sets m[k] to e
+mExists cmp m k // returns true if m contains the key k
+mContains cmp m v // returns true of m contains the value v
+mAddAll cmp ma mb // adds all of the contents of mb to ma
+mAddFromVec cmp ma vec k v // same as mAddAll cmp ma~mFromVec cmp vec k v
+mRemove cmp m k // removes key if it exists
+mPutIfAbsent cmp m k e // sets m[k] to e only if it doesnt exist already
+```

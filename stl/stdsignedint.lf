@@ -1,70 +1,70 @@
-~\sSucc(\n
-    n (\a\b\sgn sgn (iSucc a) b)
+~\iSucc(\n
+    n (\a\b\sgn sgn (uSucc a) b)
 )
 
-~\sPred(\n
-    n \a\b \sgn sgn a~iSucc b
+~\iPred(\n
+    n \a\b \sgn sgn a~uSucc b
 )
 
-~\sAdd(\m\n
-    m \ma\mb n \na\nb \sgn sgn (iAdd ma na)~iAdd mb nb
+~\iAdd(\m\n
+    m \ma\mb n \na\nb \sgn sgn (uAdd ma na)~uAdd mb nb
 )
 
-~\sNeg(\n
+~\iNeg(\n
     n \a\b \sgn sgn b a
 )
 
-~\sNormalize(\n
-    n \a\b \sgn sgn (iSub a b) (iSub b a)
+~\iNormalize(\n
+    n \a\b \sgn sgn (uSub a b) (uSub b a)
 )
 
-~\sSub(\m\n
-    sAdd m~sNeg n
+~\iSub(\m\n
+    iAdd m~iNeg n
 )
 
-~\sMul(\m\n
-    m \ma\mb n \na\nb iIsZero ma (
-        \sgn sgn (iMul mb nb)~iMul mb na
-    ) \sgn sgn (iMul ma na)~iMul ma nb
+~\iMul(\m\n
+    m \ma\mb n \na\nb uIsZero ma (
+        \sgn sgn (uMul mb nb)~uMul mb na
+    ) \sgn sgn (uMul ma na)~uMul ma nb
 )
 
-~\sIsZero(\n
-    sNormalize n \a\b bAnd (iIsZero a)~iIsZero b
+~\iIsZero(\n
+    iNormalize n \a\b bAnd (uIsZero a)~uIsZero b
 )
 
-~\sIsNeg(\n
-    n \a\b iIsGT b a
+~\iIsNeg(\n
+    n \a\b uGT b a
 )
 
-~\sIsPos(\n
-    n \a\b iIsGT a b
+~\iIsPos(\n
+    n \a\b uGT a b
 )
 
-~\sIsGT(\m\n
-    sIsNeg~sSub n m
+~\iGT(\m\n
+    iIsNeg~iSub n m
 )
 
-~\sIsLT(\m\n
-    sIsNeg~sSub m n
+~\iLT(\m\n
+    iIsNeg~iSub m n
 )
 
-~\sIsGE(\m\n
-    bNot~sIsLT m n
+~\iGE(\m\n
+    bNot~iLT m n
 )
 
-~\sIsLE(\m\n
-    bNot~sIsGT m n
+~\iLE(\m\n
+    bNot~iGT m n
 )
 
-~\sIsEQ(\m\n
-    sNormalize m \ma\mb sNormalize n \na\nb
-        bAnd (iIsEQ ma na)~iIsEQ mb nb
+~\iEQ(\m\n
+    iNormalize m \ma\mb iNormalize n \na\nb
+        bAnd (uEQ ma na)~uEQ mb nb
 )
 
-~\sIsNEQ(\m\n
-    bNot~sIsEQ m n
+~\iNEQ(\m\n
+    bNot~iEQ m n
 )
 
-~\sUnsigned(\n
-    sNormalize n \a\b a
+~\iUnsigned(\n
+    iNormalize n \a\b a
 )

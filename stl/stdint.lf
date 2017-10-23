@@ -1,77 +1,77 @@
-~\iSucc(\n
+~\uSucc(\n
     \f\x f~n f x
 )
 
-~\iPred(\n
+~\uPred(\n
     \f\x n (\g\h h~g f) (\u x) (\u u)
 )
 
-~\iAdd(\m\n
+~\uAdd(\m\n
     \f\x m f~n f x
 )
 
-~\iSub(\m\n
-    n iPred m
+~\uSub(\m\n
+    n uPred m
 )
 
-~\iMul(\m\n
+~\uMul(\m\n
     \f m~n f
 )
 
-~\iPow(\m\n
+~\uPow(\m\n
     \f\x n m f x
 )
 
-~\iIsZero(\n
+~\uIsZero(\n
     n (\x false) true
 )
 
-~\iDiv(\m\n
+~\uDiv(\m\n
     n // TODO
 )
 
-~\iIsEQ(\m\n
+~\uEQ(\m\n
     bAnd
-        (iIsZero~iSub m n)
-        (iIsZero~iSub n m)
+        (uIsZero~uSub m n)
+        (uIsZero~uSub n m)
 )
 
-~\iIsEQ(\m\n
+~\uEQ(\m\n
     bAnd
-        (iIsZero~iSub m n)
-        (iIsZero~iSub n m)
+        (uIsZero~uSub m n)
+        (uIsZero~uSub n m)
 )
 
-~\iIsNEQ(\m\n
+~\uNEQ(\m\n
     bNot~bAnd
-        (iIsZero~iSub m n)
-        (iIsZero~iSub n m)
+        (uIsZero~uSub m n)
+        (uIsZero~uSub n m)
 )
 
-~\iIsGT(\m\n
+~\uGT(\m\n
     bAnd
-        (iIsZero~iSub n m)
-        (bNot~iIsZero~iSub m n)
+        (uIsZero~uSub n m)
+        (bNot~uIsZero~uSub m n)
 )
 
-~\iIsLT(\m\n
+~\uLT(\m\n
     bAnd
-        (iIsZero~iSub m n)
-        (bNot~iIsZero~iSub n m)
+        (uIsZero~uSub m n)
+        (bNot~uIsZero~uSub n m)
 )
 
-~\iIsGE(\m\n
+~\uGE(\m\n
     bNot~bAnd
-        (iIsZero~iSub m n)
-        (bNot~iIsZero~iSub n m)
+        (uIsZero~uSub m n)
+        (bNot~uIsZero~uSub n m)
 )
 
-~\iIsLE(\m\n
+~\uLE(\m\n
     bNot~bAnd
-        (iIsZero~iSub n m)
-        (bNot~iIsZero~iSub m n)
+        (uIsZero~uSub n m)
+        (bNot~uIsZero~uSub m n)
 )
 
-~\iSigned(\n
+~\uSigned(\n
     \sgn sgn n 0
 )

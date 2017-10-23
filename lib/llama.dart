@@ -663,29 +663,55 @@ class TrashSolver extends Solver {
   
   void solve() {
     bool contStep = true;
-    bool forceDown = false;
+    Lambda forceDown = null;
     var complexity = 0;
     var ops = 0;
+    Set<Lambda> required = new Set<Lambda>();
+    List<Lambda> stack = [];
+    List<Application> aplStack = [];
     Expr step(Expr e) {
       complexity++;
       if (e is Lambda) {
-        if (forceDown) return e;
+        if (forceDown != null) return e;
+        stack.add(e);
         e.body = step(e.body);
+        stack.removeLast();
         return e;
       } else if (e is Application) {
-        if (forceDown) return e;
-        var oc = contStep;
-        var ac = false;
-        while (true) {
-          contStep = false;
-          e.lambda = step(e.lambda);
-          ac = contStep;
-          if (!contStep) break;
+        if (forceDown == null) {
+          var oc = contStep;
+          var ac = false;
+          aplStack.add(e);
+          while (true) {
+            contStep = false;
+            e.lambda = step(e.lambda);
+            ac = contStep;
+            if (!contStep) break;
+          }
+          aplStack.removeLast();
+          contStep = oc || ac;
+          
+          if (e.lambda is Variable && (e.lambda as Variable).bound != null) {
+            var vr = e.lambda as Variable;
+            var down = stack[stack.length - (1 + vr.bound)];
+            if (aplStack.any((apl) => apl.lambda == down)) {
+              contStep = true;
+              forceDown = down;
+              return e;
+            }
+          }
         }
-        contStep = oc || ac;
         
-        if (e.lambda is Lambda) {
-          var param = new Deferred(() => e.param = step(e.param));
+        if (forceDown != null && forceDown != e.lambda) {
+          return e;
+        } else if (e.lambda is Lambda) {
+          forceDown = null;
+          var param = new Deferred(() {
+            aplStack.add(e);
+            var o = e.param = step(e.param);
+            aplStack.removeLast();
+            return o;
+          });//e.param;
           contStep = true;
           List<Lambda> stack = [];
           Expr rcrCopy(Expr te) {
@@ -707,28 +733,35 @@ class TrashSolver extends Solver {
             return te;
           }
           return rcrCopy((e.lambda as Lambda).body);
-        } else {
+        } else if (!contStep) {
+          //print("stepping param");
+          aplStack.add(e);
           e.param = step(e.param);
+          aplStack.removeLast();
         }
+        
         return e;
       } else if (e is Variable) {
+        //if (e.bound == null) throw "k ${e.name}";
         return e;
       } else if (e is Deferred) {
         return e.re;
       } else throw "Unknown type";
     }
     
-    while (contStep && !forceDown) {
+    while (contStep) {
       contStep = false;
-      complexity = 0;
       ops = 0;
+      forceDown = null;
+      required = new Set<Lambda>();
+      //print("step ${complexity}");
+      //print(expr);
+      complexity = 0;
       try {
         expr = step(expr);
       } on StackOverflowError catch(e) {
         print("Stack overflow!");
-        contStep = true;
-      } on String catch(e) {
-        print(e);
+        contStep = false;
       }
     }
   }
