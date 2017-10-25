@@ -754,8 +754,8 @@ class TrashSolver extends Solver {
       ops = 0;
       forceDown = null;
       required = new Set<Lambda>();
-      //print("step ${complexity}");
-      //print(expr);
+      print("step ${complexity}");
+      print(expr);
       complexity = 0;
       try {
         expr = step(expr);

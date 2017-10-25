@@ -1,0 +1,5 @@
+~\"stdlib.lf"
+
+(while 1 (\i uLT 32) \i
+    uMul i 3
+)

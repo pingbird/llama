@@ -1,0 +1,3 @@
+~\sUnsigned(\s
+    vFold s 0 \st\e uAdd (uMul st 10)~uSub e '0'
+)

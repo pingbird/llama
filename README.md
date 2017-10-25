@@ -48,7 +48,7 @@ syntax: `~\name expr lexpr`<br/>
 The way this works is it puts the lexpr as a body of a llama and applies your expr to it
 ```
 ~\a 1
-~\b succ a
+~\b (succ a)
 succ b
 ```
 turns into
