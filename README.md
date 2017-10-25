@@ -56,7 +56,7 @@ turns into
 (\a
     (\b
         succ b
-    ) succ a
+    ) (succ a)
 ) 1
 ```
 

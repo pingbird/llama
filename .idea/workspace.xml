@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77581c2b-01f8-4b2a-98db-def02d926477" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/loops.lf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/main.dart" afterPath="$PROJECT_DIR$/bin/main.dart" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/llama.dart" afterPath="$PROJECT_DIR$/lib/llama.dart" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stl/stdlib.lf" afterPath="$PROJECT_DIR$/stl/stdlib.lf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stl/stdstring.lf" afterPath="$PROJECT_DIR$/stl/stdstring.lf" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -205,8 +199,8 @@
             <entry file="file://$PROJECT_DIR$/README.md">
               <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
                 <state split_layout="SPLIT">
-                  <first_editor relative-caret-position="391">
-                    <caret line="63" column="17" lean-forward="false" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
+                  <first_editor relative-caret-position="361">
+                    <caret line="52" column="3" lean-forward="true" selection-start-line="52" selection-start-column="3" selection-end-line="52" selection-end-column="3" />
                     <folding />
                   </first_editor>
                   <second_editor />
@@ -1167,8 +1161,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="391">
-            <caret line="63" column="17" lean-forward="false" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
+          <first_editor relative-caret-position="361">
+            <caret line="52" column="3" lean-forward="true" selection-start-line="52" selection-start-column="3" selection-end-line="52" selection-end-column="3" />
             <folding />
           </first_editor>
           <second_editor />
