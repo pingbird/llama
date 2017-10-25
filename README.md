@@ -121,7 +121,7 @@ example:
     \f\x a f ~b f x
 )
 ```
-######  bar.lm
+###### bar.lm
 ```
 ~\"foo.lm"
 concat "foo" "bar" // result is "foobar"
