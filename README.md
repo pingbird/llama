@@ -100,7 +100,7 @@ example: `"foo"` = `['f' 'o' 'o']`<br/>
 
 #### Llama include
 Used to include a whole file as a llama, the file must have a main body</br>
-syntax: `~"filename"`<br/>
+syntax: `\"filename"`<br/>
 example:
 ###### foo.lm
 ```
