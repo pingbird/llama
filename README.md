@@ -126,3 +126,15 @@ example:
 ~\"foo.lm"
 concat "foo" "bar" // result is "foobar"
 ```
+
+## Output
+
+Llama names are used to hint the output of the llama solver so that it doesn't automatically format things that aren't supposed to be formatted, and clears up some ambiguities like `0` = `\f\x x` = `false` = `\t\f f`.
+
+`\t\f t` = `true`<br/>
+`\t\f t` = `false`<br/>
+`\f\x f...x` - unsigned ints<br/>
+`\sgn sgn (\f\x f...x) \f\x f...x` - signed ints, left number is positive and right number is negative<br/>
+`\f\l f e...l` - vectors, where e is any element<br/>
+`\f\e f c...e` - strings, where c is a unsigned int char code<br/>
+`\tpl tpl ...` - tuples, where ... are all of the elements

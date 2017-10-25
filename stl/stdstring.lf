@@ -1,3 +1,8 @@
 ~\sUnsigned(\s
     vFold s 0 \st\e uAdd (uMul st 10)~uSub e '0'
 )
+
+~\sSigned(\s
+    ~\o vFold (vSkip s 1) 0 \st\e uAdd (uMul st 10)~uSub e '0'
+    uEQ (vFirst s) '+' (\sgn sgn o 0) \sgn sgn 0 o
+)

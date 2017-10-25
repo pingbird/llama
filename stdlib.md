@@ -133,7 +133,6 @@ vString v // "casts" a vector of ints to a string for display purposes
 
 ###String
 ```
-// NYI:
 sUnsigned s // parses a string to an unsigned int
 sSigned s // parses a string to signed int
 ```

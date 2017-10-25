@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77581c2b-01f8-4b2a-98db-def02d926477" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stdlib.md" afterPath="$PROJECT_DIR$/stdlib.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stl/stdstring.lf" afterPath="$PROJECT_DIR$/stl/stdstring.lf" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,10 +23,10 @@
     <favorites_list name="lambdafuck" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.47069272">
+    <splitter split-orientation="horizontal" split-proportion="0.2749226">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="stdutil.lf" pinned="false" current-in-tab="false">
+          <file leaf-file-name="stdutil.lf" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/stl/stdutil.lf">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="195">
@@ -63,16 +66,6 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="stdsignedint.lf" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/stl/stdsignedint.lf">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="285">
-                  <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="stdmap.lf" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/stl/stdmap.lf">
               <provider selected="true" editor-type-id="text-editor">
@@ -106,14 +99,24 @@
           <file leaf-file-name="stdstring.lf" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/stl/stdstring.lf">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="15">
-                  <caret line="1" column="48" lean-forward="false" selection-start-line="1" selection-start-column="48" selection-end-line="1" selection-end-column="48" />
+                <state relative-caret-position="120">
+                  <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="loops.lf" pinned="false" current-in-tab="true">
+          <file leaf-file-name="stdtuple.lf" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/stl/stdtuple.lf">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="135">
+                  <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="loops.lf" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/examples/loops.lf">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="45">
@@ -153,7 +156,7 @@
           <file leaf-file-name="llama.dart" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/lib/llama.dart">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="11310">
+                <state relative-caret-position="7912">
                   <caret line="756" column="6" lean-forward="false" selection-start-line="756" selection-start-column="6" selection-end-line="756" selection-end-column="6" />
                   <folding>
                     <element signature="e#0#24#0" expanded="true" />
@@ -172,12 +175,12 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="stdlib.md" pinned="false" current-in-tab="false">
+          <file leaf-file-name="stdlib.md" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/stdlib.md">
               <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
                 <state split_layout="FIRST">
-                  <first_editor relative-caret-position="1545">
-                    <caret line="103" column="23" lean-forward="false" selection-start-line="103" selection-start-column="23" selection-end-line="103" selection-end-column="23" />
+                  <first_editor relative-caret-position="-944">
+                    <caret line="35" column="20" lean-forward="true" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="20" />
                     <folding />
                   </first_editor>
                   <second_editor />
@@ -188,19 +191,19 @@
           <file leaf-file-name="stdvec.lf" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/stl/stdvec.lf">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1620">
+                <state relative-caret-position="15">
                   <caret line="108" column="17" lean-forward="false" selection-start-line="108" selection-start-column="17" selection-end-line="108" selection-end-column="17" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+          <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/README.md">
               <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-                <state split_layout="SPLIT">
-                  <first_editor relative-caret-position="751">
-                    <caret line="123" column="7" lean-forward="false" selection-start-line="123" selection-start-column="7" selection-end-line="123" selection-end-column="7" />
+                <state split_layout="FIRST">
+                  <first_editor relative-caret-position="811">
+                    <caret line="140" column="0" lean-forward="true" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
                     <folding />
                   </first_editor>
                   <second_editor />
@@ -221,7 +224,7 @@
           <file leaf-file-name="test.dart" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/bin/test.dart">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4200">
+                <state relative-caret-position="911">
                   <caret line="284" column="13" lean-forward="false" selection-start-line="284" selection-start-column="13" selection-end-line="284" selection-end-column="13" />
                   <folding>
                     <element signature="e#0#10392#0" expanded="true" />
@@ -322,15 +325,15 @@
         <option value="$PROJECT_DIR$/stl/stdmap.lf" />
         <option value="$PROJECT_DIR$/bin/test.dart" />
         <option value="$PROJECT_DIR$/examples/helloworld.lf" />
-        <option value="$PROJECT_DIR$/stdlib.md" />
         <option value="$PROJECT_DIR$/examples/arithmetic.lf" />
         <option value="$PROJECT_DIR$/examples/sort.lf" />
         <option value="$PROJECT_DIR$/examples/bf.lf" />
         <option value="$PROJECT_DIR$/stl/stdlib.lf" />
-        <option value="$PROJECT_DIR$/stl/stdstring.lf" />
         <option value="$PROJECT_DIR$/examples/loops.lf" />
         <option value="$PROJECT_DIR$/lib/llama.dart" />
         <option value="$PROJECT_DIR$/bin/main.dart" />
+        <option value="$PROJECT_DIR$/stdlib.md" />
+        <option value="$PROJECT_DIR$/stl/stdstring.lf" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -983,13 +986,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/compress.dart" />
-    <entry file="file://$PROJECT_DIR$/stl/stdtuple.lf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stl/stdsignedint.lf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -1013,17 +1009,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/test.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4200">
-          <caret line="284" column="13" lean-forward="false" selection-start-line="284" selection-start-column="13" selection-end-line="284" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#10392#0" expanded="true" />
-            <element signature="e#153#173#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stl/stdmap.lf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -1035,14 +1020,6 @@
     <entry file="file://$PROJECT_DIR$/test2.lf" />
     <entry file="file://$PROJECT_DIR$/test3.lf" />
     <entry file="file://$PROJECT_DIR$/test.lf" />
-    <entry file="file://$PROJECT_DIR$/stl/stdbool.lf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stl/stdstring" />
     <entry file="file://$PROJECT_DIR$/examples/helloworld.lf">
       <provider selected="true" editor-type-id="text-editor">
@@ -1078,14 +1055,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stl/stdvec.lf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1620">
-          <caret line="108" column="17" lean-forward="false" selection-start-line="108" selection-start-column="17" selection-end-line="108" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stl/stdlib.lf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -1102,40 +1071,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stl/stdstring.lf">
+    <entry file="file://$PROJECT_DIR$/examples/loops.lf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="48" lean-forward="false" selection-start-line="1" selection-start-column="48" selection-end-line="1" selection-end-column="48" />
+        <state relative-caret-position="45">
+          <caret line="3" column="12" lean-forward="false" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stdlib.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="1545">
-            <caret line="103" column="23" lean-forward="false" selection-start-line="103" selection-start-column="23" selection-end-line="103" selection-end-column="23" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stl/stdutil.lf">
+    <entry file="file://$PROJECT_DIR$/stl/stdbool.lf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        <state relative-caret-position="150">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/llama.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11310">
-          <caret line="756" column="6" lean-forward="false" selection-start-line="756" selection-start-column="6" selection-end-line="756" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1150,19 +1098,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/loops.lf">
+    <entry file="file://$PROJECT_DIR$/stl/stdstring.lf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="12" lean-forward="false" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
+        <state relative-caret-position="120">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stl/stdtuple.lf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stl/stdutil.lf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stl/stdvec.lf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="108" column="17" lean-forward="false" selection-start-line="108" selection-start-column="17" selection-end-line="108" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/llama.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7912">
+          <caret line="756" column="6" lean-forward="false" selection-start-line="756" selection-start-column="6" selection-end-line="756" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/test.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="911">
+          <caret line="284" column="13" lean-forward="false" selection-start-line="284" selection-start-column="13" selection-end-line="284" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#10392#0" expanded="true" />
+            <element signature="e#153#173#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="751">
-            <caret line="123" column="7" lean-forward="false" selection-start-line="123" selection-start-column="7" selection-end-line="123" selection-end-column="7" />
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="811">
+            <caret line="140" column="0" lean-forward="true" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
             <folding />
           </first_editor>
           <second_editor />
@@ -1171,6 +1164,17 @@
       <provider editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stdlib.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="-944">
+            <caret line="35" column="20" lean-forward="true" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="20" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
