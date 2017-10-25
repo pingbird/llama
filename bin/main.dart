@@ -8,9 +8,7 @@ import 'package:lambdafuck/llama.dart';
 main(List<String> arguments) async {
   try {
     var parser = new Parser();
-    var expr = parser.parseFile(new File("test3.lf"));
-    //var expr = parser.parse("main", '["a" "s" "d" "f"]');
-    print(expr);
+    var expr = parser.parseFile(new File(arguments.join(" ")));
     expr.bind();
     var solver = new TrashSolver(expr);
     solver.solve();

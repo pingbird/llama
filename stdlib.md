@@ -44,7 +44,6 @@ uPred x // returns x - 1
 uAdd x y // returns x + y
 uSub x y // returns x - y
 uMul x y // returns x * y
-uDiv x y // returns x / y
 uExp x y // returns exp(x, y)
 uIsZero x // returns x == 0
 uIsGT x y // return x > y
@@ -53,28 +52,33 @@ uIsGE x y // return x >= y
 uIsLE x y // return x <= y
 uIsEQ x y // return x == y
 uSigned x // converts x to signed
+uString x // converts x to a string
+// NYI:
+uDiv x y // returns x / y
 ```
 
 ###Signed Int
 ```
-sSucc x // returns x + 1
-sPred x // returns x - 1
-sNeg x // returns -x
-sAdd x y // returns x + y
-sSub x y // returns x - y
-sMul x y // returns x * y
-sDiv x y // returns x / y
-sIsZero x // returns x == 0
-sIsGT x y // return x > y
-sIsLT x y // return x < y
-sIsGE x y // return x >= y
-sIsLE x y // return x <= y
-sIsEQ x y // return x == y
-sIsNEQ x y // return x != y
-sIsNeg x // returns true if x is less than 0
-sIsPos x // returns true if x is greater than 0
-sNormalize x // normalizes x so that at least one side is zero
-sUnsigned x // converts x to unsigned number
+iSucc x // returns x + 1
+iPred x // returns x - 1
+iNeg x // returns -x
+iAdd x y // returns x + y
+iSub x y // returns x - y
+iMul x y // returns x * y
+iIsZero x // returns x == 0
+iIsGT x y // return x > y
+iIsLT x y // return x < y
+iIsGE x y // return x >= y
+iIsLE x y // return x <= y
+iIsEQ x y // return x == y
+iIsNEQ x y // return x != y
+iIsNeg x // returns true if x is less than 0
+iIsPos x // returns true if x is greater than 0
+iNormalize x // normalizes x so that at least one side is zero
+iUnsigned x // converts x to unsigned number
+// NYI:
+iDiv x y // returns x / y
+iString x // converts x to a string
 ```
 
 ###Vector
@@ -123,6 +127,15 @@ vSlice v start end // returns a slice of v from start to before end
 vAny v l // returns true if any l(e) returns true
 vFirstWhere v l d // returns first element where l(e) is true else returns d
 vEQ cmp a b // returns true if both vectors have the same contents using cmp
+// NYI:
+vString v // "casts" a vector of ints to a string for display purposes
+```
+
+###String
+```
+// NYI:
+sUnsigned s // parses a string to an unsigned int
+sSigned s // parses a string to signed int
 ```
 
 ###Map
