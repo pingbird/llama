@@ -689,55 +689,27 @@ class TrashSolver extends Solver {
   
   void solve() {
     bool contStep = true;
-    Lambda forceDown = null;
     var complexity = 0;
     var ops = 0;
-    Set<Lambda> required = new Set<Lambda>();
-    List<Lambda> stack = [];
-    List<Application> aplStack = [];
+    var de = 0;
     Expr step(Expr e) {
       complexity++;
       if (e is Lambda) {
-        if (forceDown != null) return e;
-        stack.add(e);
         e.body = step(e.body);
-        stack.removeLast();
         return e;
       } else if (e is Application) {
-        if (forceDown == null) {
-          var oc = contStep;
-          var ac = false;
-          aplStack.add(e);
-          while (true) {
-            contStep = false;
-            e.lambda = step(e.lambda);
-            ac = contStep;
-            if (!contStep) break;
-          }
-          aplStack.removeLast();
-          contStep = oc || ac;
-          
-          if (e.lambda is Variable && (e.lambda as Variable).bound != null) {
-            var vr = e.lambda as Variable;
-            var down = stack[stack.length - (1 + vr.bound)];
-            if (aplStack.any((apl) => apl.lambda == down)) {
-              contStep = true;
-              forceDown = down;
-              return e;
-            }
-          }
+        var oc = contStep;
+        var ac = false;
+        while (true) {
+          contStep = false;
+          e.lambda = step(e.lambda);
+          ac = contStep;
+          if (!contStep) break;
         }
+        contStep = oc || ac;
         
-        if (forceDown != null && forceDown != e.lambda) {
-          return e;
-        } else if (e.lambda is Lambda) {
-          forceDown = null;
-          var param = new Deferred(() {
-            aplStack.add(e);
-            var o = e.param = step(e.param);
-            aplStack.removeLast();
-            return o;
-          });//e.param;
+        if (e.lambda is Lambda) {
+          Expr param;
           contStep = true;
           List<Lambda> stack = [];
           Expr rcrCopy(Expr te) {
@@ -751,7 +723,7 @@ class TrashSolver extends Solver {
             } else if (te is Variable) {
               if (te.bound == stack.length) {
                 ops++;
-                return copyShift(param, stack.length);
+                return copyShift(param ?? (param = e.param), stack.length);
               } else if (te.bound != null && te.bound > stack.length) {
                 te.bound--;
               }
@@ -759,16 +731,11 @@ class TrashSolver extends Solver {
             return te;
           }
           return rcrCopy((e.lambda as Lambda).body);
-        } else if (!contStep) {
-          //print("stepping param");
-          aplStack.add(e);
+        } else {
           e.param = step(e.param);
-          aplStack.removeLast();
         }
-        
         return e;
       } else if (e is Variable) {
-        //if (e.bound == null) throw "k ${e.name}";
         return e;
       } else if (e is Deferred) {
         return e.re;
@@ -776,18 +743,17 @@ class TrashSolver extends Solver {
     }
     
     while (contStep) {
+      print("step");
       contStep = false;
-      ops = 0;
-      forceDown = null;
-      required = new Set<Lambda>();
-      //print("step ${complexity}");
-      //print(expr);
       complexity = 0;
+      ops = 0;
       try {
         expr = step(expr);
       } on StackOverflowError catch(e) {
         print("Stack overflow!");
-        contStep = false;
+        contStep = true;
+      } on String catch(e) {
+        print(e);
       }
     }
   }
@@ -797,10 +763,12 @@ class TraceSolver extends Solver {
   TraceSolver(Expr expr) : super(expr);
   
   void solve() {
+    print("solve");
     bool contStep = true;
     bool forceDown = false;
     var complexity = 0;
     var ops = 0;
+    var de = 0;
     Expr step(Expr e) {
       complexity++;
       if (e is Lambda) {
@@ -815,6 +783,12 @@ class TraceSolver extends Solver {
         }
         return e;
       } else if (e is Deferred) {
+        if (e._e == null) de++;
+        if (de > 100) {
+          print("force");
+          contStep = true;
+          return e;
+        }
         return e.re;
       } else throw "Unknown type";
     }
