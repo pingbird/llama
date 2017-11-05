@@ -62,13 +62,17 @@ turns into
 
 #### Vectors
 Vectors are dynamically sized right-fold lists and can be created using square brackets<br/>
-example: `[1 2 3]` = `\f\x f 1~f 2~f 3 x`<br/>
+example: `[1 2 3]` = `\f\l f 1~f 2~f 3 l`<br/>
 syntax: `[expr...]`
 
 #### Tuples
 Tuples are like vectors but statically sized and it's easier to extract specific elements.<br/>
-example: `<1 2 3>` = `\f f 1 2 3`<br/>
+example: `<1 2 3>` = `\tpl tpl 1 2 3`<br/>
 syntax: `<expr...>`
+
+To avoid confusion with the implcit lambdas in vectors and tuples, the compiler will rename the variable to prevent collision.<br/>
+For example say you wanted to do `\f [1 f]` this used to compile to `\f\f\l f 1~f f l` which isn't what the user intended,
+to fix this it will rename the conflicting lambdas and proxy them so they retain their output formatting: `\f (\x\f\l x f l) \f_\l f_ l~f_ f l`
 
 #### Numbers
 Numbers use basic church encoding so `1` means `\f\x f x` and `3` means `\f\x f~f~f x`<br/>

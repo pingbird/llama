@@ -11,3 +11,17 @@
     )
     lb iv (body body iv) iv
 )
+
+~\until(\iv\lb\l
+    ~\body(\body\st
+        ~\nst (l st)
+        if (lb nst) nst (body body nst)
+    )
+    body body iv
+)
+
+~\match(\cmp\val\res\d
+    res (\e\nx
+        (cmp val~e tFirst) (e tSecond) nx
+    ) d
+)

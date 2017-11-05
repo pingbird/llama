@@ -26,6 +26,12 @@
     n (\x false) true
 )
 
+~\uMod(\n\m
+    (\x\n x n uPred n) (n \nx
+        uPred~uIsZero nx m nx
+    ) (uPred m)
+)
+
 ~\uDiv(\m\n
     n // TODO
 )

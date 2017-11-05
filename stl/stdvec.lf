@@ -46,9 +46,9 @@
     \f\x v (\e\nx f nx) x
 )
 
-~\vFirstWhere(\v\l\d
+~\vFirstWhere(\v\l\d\fn
     v (\e\nx
-        l e e nx
+        l e (fn e) nx
     ) d
 )
 
@@ -64,9 +64,9 @@
     ) (\idx []) i
 )
 
-~\vGet(\v\i\d
+~\vGet(\v\i\d\fn
     v (\e\nx
-        \idx uIsZero idx e~nx~uPred idx
+        \idx uIsZero idx (fn e)~nx~uPred idx
     ) (\idx d) i
 )
 
@@ -115,17 +115,19 @@
     vTake (vSkip v start)~uSub end start
 )
 
-~\vLast(\v\d
-    vIsEmpty v d~vGet v (uPred~vLength v) d
+~\vFirst(\v\d\fn
+    v (\e\nx fn e) d
 )
 
-~\vFirst(\v\d
-    v (\e\nx e) d
+~\vLast(\v\d\fn
+    v (\e\nx
+        (nx tFirst) <false e> nx
+    ) <true d> tSecond
 )
 
 ~\vEQ(\cmp\a\b
     bAnd (uEQ (vLength a)~vLength b)~vFold a <true b> (\st\e
-        <(bAnd (st tFirst)~cmp e~vFirst (st tSecond) 0) ~vSkip (st tSecond) 1>
+        <(bAnd (st tFirst)~cmp e~vFirst (st tSecond) 0 null) ~vSkip (st tSecond) 1>
     ) tFirst
 )
 
@@ -145,8 +147,8 @@
     vConcat (vInsertEnd (vTake v i) e)~vSkip v i
 )
 
-~\vReduce(\v\l\d
-    vFold (vSkip v 1) (vGet v 0 d) l
+~\vReduce(\v\l\d\fn
+    vFold (vSkip v 1) (vFirst v d null) l
 )
 
 ~\vRemoveAt(\v\i
@@ -157,8 +159,4 @@
 
 ~\vAny(\v\l
     v (\e\nx l e true nx) false
-)
-
-~\vFirstWhere(\v\l\d
-    v (\e\nx l e e nx) d
 )

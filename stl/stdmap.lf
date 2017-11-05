@@ -22,8 +22,8 @@
     vMap m \e e tSecond
 )
 
-~\mGet(\cmp\m\k\d
-    vFirstWhere m (\e cmp k~e tFirst) <null d> tSecond
+~\mGet(\cmp\m\k\d\fn
+    vFirstWhere m (\e cmp k~e tFirst) d \e fn~e tSecond
 )
 
 ~\mExists(\cmp\m\k

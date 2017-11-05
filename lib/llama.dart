@@ -69,6 +69,17 @@ abstract class Expr {
     } else throw "Unknown type";
   }
   
+  bool containsVar(String name) {
+    var t = this;
+    if (t is Lambda) {
+      return t.param != name && t.body.containsVar(name);
+    } else if (t is Application) {
+      return t.param.containsVar(name) || t.lambda.containsVar(name);
+    } else if (t is Variable) {
+      return t.name == name;
+    } else throw "Unknown type";
+  }
+  
   Expr copy();
   
   List<Expr> get children;
@@ -462,10 +473,20 @@ class Parser {
         if (!b.checkRead(",") && (b.data.length == 0 && b.data[b.data.length - 1] != ",")) throw new ParserError("',' expected", srcRef);
         b.skipWhitespace();
       }
-      Expr o = new Variable("l");
+      var lname = "l";
+      while (e.any((exp) => exp.containsVar(lname))) lname += "_";
+      var fname = "f";
+      while (e.any((exp) => exp.containsVar(fname))) fname += "_";
+      Expr o = new Variable(lname);
       e.reversed.forEach((exp) {
-        o = new Application(new Application(new Variable("f"), exp), o);
+        o = new Application(new Application(new Variable(fname), exp), o);
       });
+      if (fname != "f" || lname != "l") {
+        return new Application(
+          new Lambda("x", new Lambda("f", new Lambda("l", new Application(new Application(new Variable("x"), new Variable("f")), new Variable("l"))))),
+          new Lambda(fname, new Lambda(lname, o))
+        );
+      }
       return new Lambda("f", new Lambda("l", o));
     } else if (b.checkRead("<")) {
       List<Expr> e = [];
@@ -478,10 +499,15 @@ class Parser {
         if (!b.checkRead(",") && (b.data.length == 0 && b.data[b.data.length - 1] != ",")) throw new ParserError("',' expected", srcRef);
         b.skipWhitespace();
       }
-      Expr o = new Variable("tpl");
+      var tname = "tpl";
+      while (e.any((exp) => exp.containsVar(tname))) tname += "_";
+      Expr o = new Variable(tname);
       e.forEach((exp) {
         o = new Application(o, exp);
       });
+      if (tname != "tpl") {
+        return new Application(new Lambda("x", new Lambda("tpl", new Application(new Variable("x"), new Variable("tpl")))), new Lambda(tname, o));
+      }
       return new Lambda("tpl", o);
     } else if (b.checkRead("+") || b.checkRead("-")) {
       var sign = b.raw.substring(b.offset - 1, b.offset);
@@ -754,8 +780,8 @@ class TrashSolver extends Solver {
       ops = 0;
       forceDown = null;
       required = new Set<Lambda>();
-      print("step ${complexity}");
-      print(expr);
+      //print("step ${complexity}");
+      //print(expr);
       complexity = 0;
       try {
         expr = step(expr);

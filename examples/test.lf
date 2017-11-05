@@ -1,0 +1,11 @@
+~\"stdlib.lf"
+
+~\code "10+"
+
+(\s \f\e s f e)~vFold code <"" 0> (\st\char
+    ~\str (st tFirst)
+    ~\num (st tSecond)
+    (bAnd (uGE char '0') (uLE char '9')) (
+        <str~uAdd (uSub char '0')~uMul num 10>
+    ) <(vConcat str~vGenerate (uIsZero num 1 num) char) 0>
+) tFirst

@@ -7,19 +7,25 @@ import 'package:lambdafuck/llama.dart';
 import 'package:worker/worker.dart';
 
 const Map<String, String> tests = const {
+  '(\\tpl <1 tpl>) 2': '<1 2>',
+  '(\\l [1 l]) 2': '[1 2]',
+  
   //'while 0 (\\i uIsNEQ (uMul i 2) 8) (\\i uSucc i)': '4',
   
+  // Bools //
   '[(true 1 2) (false 1 2)]': '[1 2]',
   '[(bNot false) (bNot true)]': '[true false]',
   '[(bAnd false false) (bAnd false true) (bAnd true false) (bAnd true true)]': '[false false false true]',
   '[(bOr false false) (bOr false true) (bOr true false) (bOr true true)]': '[false true true true]',
   '[(bXor false false) (bXor false true) (bXor true false) (bXor true true)]': '[false true true false]',
   
+  // Unsigned ints //
   '[(uSucc 0) (uSucc 7)]': '[1 8]',
   '[(uPred 0) (uPred 1) (uPred 8)]': '[0 0 7]',
   '[(uAdd 0 0) (uAdd 0 5) (uAdd 6 9)]': '[0 5 15]',
   '[(uSub 0 0) (uSub 0 5) (uSub 13 6)]': '[0 0 7]',
   '[(uMul 0 0) (uMul 1 7) (uMul 20 21)]': '[0 7 420]',
+  '[(uMod 16 3) (uMod 0 1) (uMod 9 7)]': '[1 0 2]',
   //'[(uDiv 0 0) (uDiv 1 7) (uDiv 10 2)]': '[0 0 5]',
   '[(uPow 0 0) (uPow 2 8) (uPow 10 3)]': '[1 256 1000]',
   '[(uIsZero 0) (uIsZero 1) (uIsZero 2)]': '[true false false]',
@@ -31,6 +37,7 @@ const Map<String, String> tests = const {
   '[(uLE 0 0) (uLE 6 9) (uLE 9 6)]': '[true true false]',
   '[(uSigned 0) (uSigned 6) (uSigned 9)]': '[+0 +6 +9]',
   
+  // Signed ints //
   '[(iSucc +0) (iSucc +6) (iSucc -9)]': '[+1 +7 -8]',
   '[(iPred +0) (iPred +6) (iPred -9)]': '[-1 +5 -10]',
   '[(iAdd +10 +4) (iAdd +0 -5) (iAdd +6 -9)]': '[+14 -5 -3]',
@@ -47,6 +54,7 @@ const Map<String, String> tests = const {
   '[(iLE +0 +0) (iLE +6 -9) (iLE +9 +6) (iLE -9 -6)]': '[true false false true]',
   '[(iUnsigned +0) (iUnsigned +20) (iUnsigned -20)]': '[0 20 0]',
   
+  // Tuples //
   '[(tTuple 4 a b c d) (tTuple 2 a b) (tTuple 0)]': '[<a b c d> <a b> <>]',
   '[(tVector 0 <>) (tVector 1 <a>) (tVector 3 <a b c>)]': '[[] [a] [a b c]]',
   '[\n'
@@ -65,6 +73,7 @@ const Map<String, String> tests = const {
     '(tSet 5 <0 1 2 3 4> 4 5)\n'
     ']' : '[<1 1 2> <0 1 2 3> <0 1 2 3 5>]',
   
+  // Vectors //
   '[\n'
     '(vFold [] 0 uAdd)\n'
     '(vFold [1 2 3] 0 uAdd)\n'
@@ -96,11 +105,6 @@ const Map<String, String> tests = const {
     '(vLength [2 4 0 3 1])\n'
     ']' : '[0 2 5]',
   '[\n'
-    '(vFirstWhere [] (\\e true) 0)\n'
-    '(vFirstWhere [1 2 3] (\\e true) 0)\n'
-    '(vFirstWhere [1 2 3 4 5] (\\e uGT e 3) 0)\n'
-    ']' : '[0 1 4]',
-  '[\n'
     '(vTake [] 1)\n'
     '(vTake [1 2 3] 6)\n'
     '(vTake [1 2 3 4 5] 4)\n'
@@ -111,9 +115,9 @@ const Map<String, String> tests = const {
     '(vSkip [1 2 3 4 5] 2)\n'
     ']' : '[[] [] [3 4 5]]',
   '[\n'
-    '(vGet [] 1 0)\n'
-    '(vGet [1 2 3] 0 0)\n'
-    '(vGet [1 2 3 4 5] 4 0)\n'
+    '(vGet [] 1 0 null)\n'
+    '(vGet [1 2 3] 0 0 null)\n'
+    '(vGet [1 2 3 4 5] 4 0 null)\n'
     ']' : '[0 1 5]',
   '[\n'
     '(vWhere [0 1 2] (\\e false))\n'
@@ -171,14 +175,14 @@ const Map<String, String> tests = const {
     '(vSlice [1 2 3 4 5] 1 4)\n'
     ']' : '[[] [1 2] [2 3 4]]',
   '[\n'
-    '(vLast [] 6)\n'
-    '(vLast [1] 9)\n'
-    '(vLast [1 2 3] 4)\n'
+    '(vLast [] 6 null)\n'
+    '(vLast [1] 9 null)\n'
+    '(vLast [1 2 3] 4 null)\n'
     ']' : '[6 1 3]',
   '[\n'
-    '(vFirst [] 6)\n'
-    '(vFirst [1] 9)\n'
-    '(vFirst [1 2 3] 4)\n'
+    '(vFirst [] 6 null)\n'
+    '(vFirst [1] 9 null)\n'
+    '(vFirst [1 2 3] 4 null)\n'
     ']' : '[6 1 1]',
   '[\n'
     '(vEQ uEQ [] [])\n'
@@ -206,9 +210,9 @@ const Map<String, String> tests = const {
     '(vInsertAt [1 2 3 4] 2 9)\n'
     ']' : '[[1] [1] [2 1] [1 2] [1 2 9 3 4]]',
   '[\n'
-    '(vReduce [] uAdd 0)\n'
-    '(vReduce [0 1 2 3] uAdd 0)\n'
-    '(vReduce [2 1 2 3] uMul 0)\n'
+    '(vReduce [] uAdd 0 null)\n'
+    '(vReduce [0 1 2 3] uAdd 0 null)\n'
+    '(vReduce [2 1 2 3] uMul 0 null)\n'
     ']' : '[0 6 12]',
   '[\n'
     '(vRemoveAt [] 0)\n'
@@ -224,12 +228,13 @@ const Map<String, String> tests = const {
     '(vAny [1 2 0 3] uIsZero)\n'
     ']' : '[false false true true]',
   '[\n'
-    '(vFirstWhere [] (\\e uGT e 3) 0)\n'
-    '(vFirstWhere [1 2 3] (\\e uGT e 3) 0)\n'
-    '(vFirstWhere [1 2 3 4 5] (\\e uGT e 3) 0)\n'
-    '(vFirstWhere [3 2 9 2] (\\e uGT e 3) 0)\n'
+    '(vFirstWhere [] (\\e uGT e 3) 0 null)\n'
+    '(vFirstWhere [1 2 3] (\\e uGT e 3) 0 null)\n'
+    '(vFirstWhere [1 2 3 4 5] (\\e uGT e 3) 0 null)\n'
+    '(vFirstWhere [3 2 9 2] (\\e uGT e 3) 0 null)\n'
     ']' : '[0 0 4 9]',
   
+  // Maps //
   '[\n'
     '(mFromVec uEQ [] (\\e e) (\\e uMul e e))\n'
     '(mFromVec uEQ [1] (\\e e) (\\e uMul e e))\n'
@@ -251,9 +256,9 @@ const Map<String, String> tests = const {
     '(mValues [<0 1> <1 2>])\n'
     ']' : '[[] [1] [1 2]]',
   '[\n'
-    '(mGet uEQ [] 0 0)\n'
-    '(mGet uEQ [<0 1>] 0 0)\n'
-    '(mGet uEQ [<0 1> <3 2>] 3 0)\n'
+    '(mGet uEQ [] 0 0 null)\n'
+    '(mGet uEQ [<0 1>] 0 0 null)\n'
+    '(mGet uEQ [<0 1> <3 2>] 3 0 null)\n'
     ']' : '[0 1 2]',
   '[\n'
     '(mExists uEQ [] 0)\n'
