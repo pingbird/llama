@@ -160,3 +160,7 @@
 ~\vAny(\v\l
     v (\e\nx l e true nx) false
 )
+
+~\vDelimitate(\v\dl
+    vRemoveLast~vExpand v \e [e dl]
+)

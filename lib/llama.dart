@@ -743,7 +743,6 @@ class TrashSolver extends Solver {
     }
     
     while (contStep) {
-      print("step");
       contStep = false;
       complexity = 0;
       ops = 0;
@@ -763,7 +762,6 @@ class TraceSolver extends Solver {
   TraceSolver(Expr expr) : super(expr);
   
   void solve() {
-    print("solve");
     bool contStep = true;
     bool forceDown = false;
     var complexity = 0;

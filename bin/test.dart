@@ -228,11 +228,16 @@ const Map<String, String> tests = const {
     '(vAny [1 2 0 3] uIsZero)\n'
     ']' : '[false false true true]',
   '[\n'
-    '(vFirstWhere [] (\\e uGT e 3) 0 null)\n'
-    '(vFirstWhere [1 2 3] (\\e uGT e 3) 0 null)\n'
-    '(vFirstWhere [1 2 3 4 5] (\\e uGT e 3) 0 null)\n'
-    '(vFirstWhere [3 2 9 2] (\\e uGT e 3) 0 null)\n'
-    ']' : '[0 0 4 9]',
+      '(vFirstWhere [] (\\e uGT e 3) 0 null)\n'
+      '(vFirstWhere [1 2 3] (\\e uGT e 3) 0 null)\n'
+      '(vFirstWhere [1 2 3 4 5] (\\e uGT e 3) 0 null)\n'
+      '(vFirstWhere [3 2 9 2] (\\e uGT e 3) 0 null)\n'
+      ']' : '[0 0 4 9]',
+  '[\n'
+      '(vDelimitate [] 0)\n'
+      '(vDelimitate [1 2 3] 1)\n'
+      '(vDelimitate [4 5] 2)\n'
+      ']' : '[[] [1 1 2 1 3] [4 2 5]]',
   
   // Maps //
   '[\n'
