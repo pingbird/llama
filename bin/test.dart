@@ -3,8 +3,9 @@
 
 import 'dart:async';
 import 'dart:isolate';
-import 'package:lambdafuck/llama.dart';
-import 'package:worker/worker.dart';
+import 'package:llama/llama.dart';
+import 'package:llama/solvers/trash.dart';
+import 'package:worker2/worker2.dart';
 
 const Map<String, String> tests = const {
   '(\\tpl <1 tpl>) 2': '<1 2>',
@@ -300,10 +301,10 @@ class MyTask implements Task {
 
   MyTask(this.code);
   
-  String execute() {
+  Future<String> execute() async {
     //print("testing ${code}..");
     return (new TrashSolver(
-      new Parser().parse("test", "~\\\"stdlib.lf\"\n${code}")
+      await new Parser().parse("test", "~\\\"stdlib.lf\"\n${code}")
         ..bind())
       ..solve()).expr.toString();
   }

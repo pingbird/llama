@@ -3,13 +3,14 @@
 
 import 'dart:io';
 
-import 'package:lambdafuck/llama.dart';
+import 'package:llama/llama.dart';
+import 'package:llama/solvers/trash.dart';
 
 main(List<String> arguments) async {
   try {
     var t1 = new DateTime.now();
     var parser = new Parser();
-    var expr = parser.parseFile(new File("examples/test.lf"));
+    var expr = await parser.parseFile(new File("examples/test.lf"));
     expr.bind();
     var solver = new TrashSolver(expr);
     solver.solve();
